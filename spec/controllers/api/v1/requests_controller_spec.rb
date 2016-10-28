@@ -79,4 +79,41 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
       it { should respond_with 422 }
     end 
   end
+
+
+  describe "PUT/PATCH #update" do 
+    
+    context "successfully update request" do
+      before do
+        @request_ = FactoryGirl.create :request
+        patch :update, { id: @request_.id, request: { schedule: "twice a week, mondays and fridays" } }
+      end 
+
+      it "returns response in json" do 
+        request_response = json_response
+        expect(request_response[:schedule]).to eq "twice a week, mondays and fridays"
+      end
+
+      it { should respond_with 200 }
+    end
+
+    context "request update failed" do 
+      before do
+        @request_ = FactoryGirl.create :request
+        patch :update, { id: @request_.id, request: { living_rooms: "two rooms" } }  
+      end
+
+      it "returns error response in json" do 
+        request_response = json_response
+        expect(request_response).to have_key(:errors)
+      end
+
+      it "return reason for errors in json" do 
+        request_response = json_response
+        expect(request_response[:errors][:living_rooms]).to eq ["is not a number"]
+      end
+
+      it { should respond_with 422 }
+    end
+  end
 end
