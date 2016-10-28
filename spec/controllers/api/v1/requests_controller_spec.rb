@@ -116,4 +116,16 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
       it { should respond_with 422 }
     end
   end
+
+  describe "DELETE #destroy" do
+
+    context "successfully" do 
+      before do 
+        @request_ = FactoryGirl.create :request
+        delete :destroy, id: @request_.id
+      end    
+
+      it { should respond_with 204 }
+    end 
+  end
 end

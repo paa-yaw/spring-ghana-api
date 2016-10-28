@@ -1,5 +1,5 @@
 class Api::V1::RequestsController < ApplicationController
-  before_action :set_request, only: [:show, :update]
+  before_action :set_request, only: [:show, :update, :destroy]
   respond_to :json
 
   def show
@@ -22,6 +22,11 @@ class Api::V1::RequestsController < ApplicationController
     else
       render json: { errors: @request.errors }, status: 422
     end
+  end
+
+  def destroy
+  	@request.destroy
+  	head 204
   end
 
 
