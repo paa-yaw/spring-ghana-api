@@ -1,8 +1,9 @@
 class Api::V1::ClientsController < ApplicationController
-  before_action :set_client, only: [:show]
+  before_action :set_client, only: [:show, :update, :destroy]
   respond_to :json
 
   def show
+  	respond_with set_client
   end
 
   def create
@@ -15,6 +16,20 @@ class Api::V1::ClientsController < ApplicationController
     end 
   end
 
+  def update
+
+  	if @client.update(client_params)
+      render json: @client, status: 204, location: [:api, @client]
+    else
+      render json: { errors: @client.errors }, status: 422
+  	end    
+  end
+
+  def destroy
+  	@client.destroy
+  	head 204
+  end
+
 
   private
 
@@ -23,7 +38,7 @@ class Api::V1::ClientsController < ApplicationController
   end
 
   def set_client
-    respond_with @client = Client.find(params[:id])	
+    @client = Client.find(params[:id])	
 rescue ActiveRecord::RecordNotFound
 	render json: { errors: "client record can't be found" }, status: 404
   end

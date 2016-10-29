@@ -52,5 +52,71 @@ RSpec.describe Api::V1::ClientsController, type: :controller do
 
       it { should respond_with 201 }
     end
+
+    context "unsuccessfully" do 
+      before do
+      	@attributes = FactoryGirl.attributes_for :client
+      	@attributes[:email] = ""
+      	@invalid_client_attributes = @attributes
+      	post :create, {  client: @attributes }
+      end
+
+      it "returns response error in json" do 
+        client_response = json_response
+        expect(client_response).to have_key(:errors)
+      end
+
+      it "returns reason for error in json" do 
+        client_response = json_response
+        expect(client_response[:errors][:email]).to eq ["can't be blank"]
+      end
+
+      it { should respond_with 422 }
+    end
+  end
+
+  describe "PUT/PATCH #update" do 
+  	before { @client = FactoryGirl.create :client }
+
+    context "successfully" do
+      before do
+      	patch :update, { id: @client.id, client: { email: "new@email.com" } }
+      end
+
+      it "returns response in json" do 
+        client_response = json_response
+        expect(client_response[:email]).to eq "new@email.com"
+      end
+
+      it { should respond_with 204 }
+    end
+
+    context "unsuccessfully" do
+      before do
+        patch :update, { id: @client.id, client: { email: "bademail.com" } }
+      end
+
+      it "returns error in json" do 
+   		client_response = json_response
+   		expect(client_response).to have_key(:errors)
+      end
+
+      it "returns reason for error in json" do 
+        client_response = json_response
+        expect(client_response[:errors][:email]).to eq ["is invalid"]
+      end
+
+      it { should respond_with 422 }
+    end
+  end
+
+  describe "DELETE #destroy" do
+    before { @client = FactoryGirl.create :client }
+
+    before do 
+      delete :destroy, id: @client.id
+    end 
+
+    it { should respond_with 204 }
   end
 end
