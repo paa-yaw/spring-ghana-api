@@ -2,12 +2,17 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::RequestsController, type: :controller do
 
+  before do
+    @client = FactoryGirl.create :client 
+    api_authorization_headers @client.auth_token
+  end
+
   describe "GET #show" do 
 
     context "successful GET request" do
       before do 
-        @request_ = FactoryGirl.create :request
-        get :show, id: @request_.id
+        @request_ = FactoryGirl.create :request, client: @client
+        get :show, client_id: @client.id, id: @request_.id
       end
 
       it "should return response in json" do 
@@ -20,7 +25,7 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
 
     context "unsuccessful GET request" do 
        before do 
-        get :show, id: "some id"
+        get :show, client_id: @client.id, id: "some id"
       end
 
       it "should return error response in json" do
@@ -41,8 +46,8 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
 
     context "request created successfully" do 
       before do 
-        @request_attributes = FactoryGirl.attributes_for :request
-        post :create, { request: @request_attributes }
+        @request_attributes = FactoryGirl.attributes_for :request, client: @client
+        post :create, { client_id: @client.id, request: @request_attributes }
       end
 
       it "returns response in json" do 
@@ -63,7 +68,7 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
         	time_of_arrival: Time.now,
         	schedule: "3 times a week, mondays, wednesdays and fridays" 
         } 
-        post :create, { request: @request_invalid_attributes }
+        post :create, { client_id: @client.id, request: @request_invalid_attributes }
       end
 
       it "returns errors in json" do 
@@ -85,8 +90,8 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
     
     context "successfully update request" do
       before do
-        @request_ = FactoryGirl.create :request
-        patch :update, { id: @request_.id, request: { schedule: "twice a week, mondays and fridays" } }
+        @request_ = FactoryGirl.create :request, client: @client
+        patch :update, { client_id: @client.id, id: @request_.id, request: { schedule: "twice a week, mondays and fridays" } }
       end 
 
       it "returns response in json" do 
@@ -99,8 +104,8 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
 
     context "request update failed" do 
       before do
-        @request_ = FactoryGirl.create :request
-        patch :update, { id: @request_.id, request: { living_rooms: "two rooms" } }  
+        @request_ = FactoryGirl.create :request, client: @client
+        patch :update, { client_id: @client.id, id: @request_.id, request: { living_rooms: "two rooms" } }  
       end
 
       it "returns error response in json" do 
@@ -121,8 +126,8 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
 
     context "successfully" do 
       before do 
-        @request_ = FactoryGirl.create :request
-        delete :destroy, id: @request_.id
+        @request_ = FactoryGirl.create :request, client: @client
+        delete :destroy, client_id: @client.id, id: @request_.id
       end    
 
       it { should respond_with 204 }

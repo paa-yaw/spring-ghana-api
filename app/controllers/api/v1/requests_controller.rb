@@ -1,5 +1,6 @@
 class Api::V1::RequestsController < ApplicationController
   before_action :set_request, only: [:show, :update, :destroy]
+  before_action :authenticate_with_token!
   respond_to :json
 
   def show
@@ -7,7 +8,7 @@ class Api::V1::RequestsController < ApplicationController
   end
 
   def create
-  	@request = Request.new(request_params)
+  	@request = current_client.requests.build(request_params)
 
   	if @request.save
   	  render json: @request, status: 201, location: [:api, @request]
@@ -33,10 +34,14 @@ class Api::V1::RequestsController < ApplicationController
   private
 
   def set_request
-  	@request = Request.find(params[:id])
+  	@request = current_client.requests.find(params[:id])
     rescue ActiveRecord::RecordNotFound
     render json: { errors: "Record Not Found"}, status: 404
   end
+
+  # def set_client
+  #   @client = Client.find(params[:client_id])
+  # end
 
   def request_params
     params.require(:request).permit(:bedrooms, :bathrooms, :kitchens, :living_rooms, :time_of_arrival, :schedule)

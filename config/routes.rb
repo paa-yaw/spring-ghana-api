@@ -7,8 +7,10 @@ Rails.application.routes.draw do
 
   scope module: :v1, 
                 constraints: ApiConstraints.new(version: 1, default: true) do
-                  resources :requests, only: [:show, :create, :update, :destroy]
-                  resources :clients, only: [:show, :create, :update, :destroy]
+                  resources :requests, only: [:show]
+                  resources :clients, only: [:show, :create, :update, :destroy] do 
+                    resources :requests, only: [:create, :update, :destroy]
+                  end
                   resources :sessions, only: [:create, :destroy]
   end
 
