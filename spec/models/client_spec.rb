@@ -48,14 +48,17 @@ RSpec.describe Client, type: :model do
   end
 
   describe "generate_auth_token!" do 
-    
-    before do 
-      allow(Devise).to receive(:friendly_token).and_return("randomUNIQUEtoken123")
-      @client.generate_auth_token!    
-    end
 
     it "expect auth_token to be generated" do 
+      allow(Devise).to receive(:friendly_token).and_return("randomUNIQUEtoken123")
+      @client.generate_auth_token!    	
       expect(@client.auth_token).to eq "randomUNIQUEtoken123"
+    end
+
+    it "generates a unique auth_token" do 
+      existing_client = FactoryGirl.create :client, auth_token: "randomUNIQUEtoken123"
+      @client.generate_auth_token!
+      expect(@client.auth_token).not_to eq existing_client.auth_token
     end
   end
 
