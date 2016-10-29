@@ -5,18 +5,17 @@ RSpec.describe Request, type: :model do
 
   subject { @request }
 
-  it { should respond_to :bedrooms }
-  it { should respond_to :bathrooms }
-  it { should respond_to :living_rooms }
-  it { should respond_to :kitchens }
-  it { should respond_to :time_of_arrival }
-  it { should respond_to :schedule }
+  @request_attributes = [:bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule]
+  
+
+  # response specs of attributes
+  @request_attributes.each do |attribute|
+    it { should respond_to attribute }
+  end
 
   it { should be_valid }
 
   # validation specs
-  @request_attributes = [:bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule]
-
   @request_attributes.each do |attribute|
     it { should validate_presence_of attribute }
   end

@@ -5,6 +5,7 @@ FactoryGirl.define do
   	living_rooms { rand(1..100) }
   	kitchens { rand(1..100) }
   	time_of_arrival { Time.now }
-  	schedule { "3 times a week, mondays, wednesdays and fridays" }    
+  	schedule { "3 times a week, mondays, wednesdays and fridays" }
+  	# client    
   end
 end
