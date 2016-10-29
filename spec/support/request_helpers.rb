@@ -6,6 +6,10 @@ module Request_
   end
 
   module HeaderHelpers
+
+    def api_authorization_headers(token)
+      request.headers["Authorization"] = token
+    end
   	def accept_header(version = 1)
   	  request.headers["Accept"] = "application/vnd.spring_ghana.v#{version}"	
   	end

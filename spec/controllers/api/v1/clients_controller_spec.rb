@@ -80,6 +80,7 @@ RSpec.describe Api::V1::ClientsController, type: :controller do
 
     context "successfully" do
       before do
+      	api_authorization_headers @client.auth_token
       	patch :update, { id: @client.id, client: { email: "new@email.com" } }
       end
 
@@ -93,6 +94,7 @@ RSpec.describe Api::V1::ClientsController, type: :controller do
 
     context "unsuccessfully" do
       before do
+      	api_authorization_headers @client.auth_token
         patch :update, { id: @client.id, client: { email: "bademail.com" } }
       end
 
@@ -114,7 +116,8 @@ RSpec.describe Api::V1::ClientsController, type: :controller do
     before { @client = FactoryGirl.create :client }
 
     before do 
-      delete :destroy, id: @client.id
+      api_authorization_headers @client.auth_token	
+      delete :destroy, id: @client.auth_token
     end 
 
     it { should respond_with 204 }

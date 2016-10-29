@@ -1,5 +1,6 @@
 class Api::V1::ClientsController < ApplicationController
-  before_action :set_client, only: [:show, :update, :destroy]
+  before_action :set_client, only: [:show, :update]
+  before_action :authenticate_with_token!, only: [:update, :destroy]
   respond_to :json
 
   def show
@@ -25,6 +26,7 @@ class Api::V1::ClientsController < ApplicationController
   end
 
   def destroy
+  	@client = current_client
   	@client.destroy
   	head 204
   end
