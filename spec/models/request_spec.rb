@@ -23,4 +23,8 @@ RSpec.describe Request, type: :model do
   [:bedrooms, :bathrooms, :living_rooms, :kitchens].each do |attribute|
     it { should validate_numericality_of(attribute).is_greater_than_or_equal_to(0)}	
   end
+
+  # association specs
+
+  it { should belong_to :client }
 end
