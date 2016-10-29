@@ -17,7 +17,6 @@ class Api::V1::ClientsController < ApplicationController
   end
 
   def update
-
   	if @client.update(client_params)
       render json: @client, status: 204, location: [:api, @client]
     else
@@ -29,6 +28,7 @@ class Api::V1::ClientsController < ApplicationController
   	@client.destroy
   	head 204
   end
+
 
 
   private

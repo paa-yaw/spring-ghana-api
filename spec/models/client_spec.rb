@@ -33,7 +33,6 @@ RSpec.describe Client, type: :model do
 
   describe "test association" do
   	before do 
-  	  @client.save
   	  requests = 5.times { FactoryGirl.create :request, client: @client }
   	end
 
@@ -46,5 +45,26 @@ RSpec.describe Client, type: :model do
         expect(Request.find(request)).to raise_error ActiveRecord::RecordNotFound
       end
   	end
+  end
+
+  describe "generate_auth_token!" do 
+    
+    before do 
+      allow(Devise).to receive(:friendly_token).and_return("randomUNIQUEtoken123")
+      @client.generate_auth_token!    
+    end
+
+    it "expect auth_token to be generated" do 
+      expect(@client.auth_token).to eq "randomUNIQUEtoken123"
+    end
+  end
+
+  describe "test before callback" do
+  	  before { @client = FactoryGirl.build :client }
+
+      it "successfully" do
+       expect(@client).to receive(:generate_auth_token!)
+       @client.save 
+      end
   end
 end
