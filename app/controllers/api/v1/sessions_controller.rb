@@ -2,8 +2,9 @@ class Api::V1::SessionsController < ApplicationController
   respond_to :json
 
   def create 
-    client_email = params[:session][:email]
     client_password = params[:session][:password]
+    client_email = params[:session][:email]
+
 
     client = client_email.present? && Client.find_by(email: client_email)
 

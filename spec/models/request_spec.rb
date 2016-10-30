@@ -5,7 +5,7 @@ RSpec.describe Request, type: :model do
 
   subject { @request }
 
-  @request_attributes = [:bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule]
+  @request_attributes = [:bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule, :client_id]
   
 
   # response specs of attributes
