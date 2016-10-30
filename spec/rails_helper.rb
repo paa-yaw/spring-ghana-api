@@ -67,6 +67,7 @@ RSpec.configure do |config|
     include_default_headers
   end
 end
+
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     # Choose a test framework:

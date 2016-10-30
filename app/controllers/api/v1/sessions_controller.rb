@@ -19,7 +19,8 @@ class Api::V1::SessionsController < ApplicationController
 
   def destroy
   	client = Client.find_by(auth_token: params[:id])
-  	client.destroy
+    client.generate_auth_token!
+    client.save
   	head 204
   end
 end

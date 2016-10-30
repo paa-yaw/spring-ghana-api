@@ -41,7 +41,14 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
   describe "#DELETE #destroy" do 
   	before do
   	  sign_in @client
+  	  @old_token = @client.auth_token
   	  delete :destroy, id: @client.auth_token 
+      allow(Devise).to receive(:friendly_token).and_return("anewrandomtoken098")
+      @client.generate_auth_token!
+  	end
+
+  	it "change in token" do 
+      expect(@old_token).not_to eq @client.auth_token
   	end
 
   	it { should respond_with 204 }
