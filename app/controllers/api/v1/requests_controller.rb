@@ -1,7 +1,12 @@
 class Api::V1::RequestsController < ApplicationController
-  before_action :set_request, only: [:show, :update, :destroy]
   before_action :authenticate_with_token!
+  before_action :set_request, only: [:show, :update, :destroy]
   respond_to :json
+
+  def index
+    @requests = current_client.requests.all
+    render json: @requests, status: 200
+  end
 
   def show
   	respond_with set_request

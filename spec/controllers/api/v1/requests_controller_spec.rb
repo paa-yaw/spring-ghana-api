@@ -7,6 +7,37 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
     api_authorization_headers @client.auth_token
   end
 
+  describe "GET #index" do
+
+    context "successful GET request for index of requests for a client" do 
+      before do 
+        requests = 5.times { FactoryGirl.create :request, client: @client }
+        api_authorization_headers @client.auth_token
+        get :index, client_id: @client.id
+      end
+
+      it "should return list of requests in json" do 
+        requests_response = json_response
+        # expect(requests_response[:requests]).to have(5).items
+        expect(@client.requests.count).to eq 5 
+      end
+
+      it { should respond_with 200 }
+    end 
+
+    context "if no requests created for client" do 
+      before do
+        api_authorization_headers @client.auth_token
+        get :index, client_id: @client.id
+      end
+
+      it "should return no client requests" do
+        requests_response = json_response
+        expect(@client.requests.count).to eq 0 
+      end
+    end
+  end
+
   describe "GET #show" do 
 
     context "successful GET request" do
