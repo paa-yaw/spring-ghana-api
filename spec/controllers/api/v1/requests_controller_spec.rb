@@ -109,7 +109,7 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
 
       it "returns reason for error in json" do 
         request_response = json_response
-        expect(request_response[:errors][:bedrooms]).to eq ["is not a number"]
+        expect(request_response[:errors][:bedrooms]).to include "is not a number"
       end
 
       it { should respond_with 422 }
@@ -146,7 +146,7 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
 
       it "return reason for errors in json" do 
         request_response = json_response
-        expect(request_response[:errors][:living_rooms]).to eq ["is not a number"]
+        expect(request_response[:errors][:living_rooms]).to include "is not a number"
       end
 
       it { should respond_with 422 }

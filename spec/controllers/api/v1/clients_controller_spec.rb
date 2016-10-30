@@ -68,7 +68,7 @@ RSpec.describe Api::V1::ClientsController, type: :controller do
 
       it "returns reason for error in json" do 
         client_response = json_response
-        expect(client_response[:errors][:email]).to eq ["can't be blank"]
+        expect(client_response[:errors][:email]).to include "can't be blank"
       end
 
       it { should respond_with 422 }
@@ -105,7 +105,7 @@ RSpec.describe Api::V1::ClientsController, type: :controller do
 
       it "returns reason for error in json" do 
         client_response = json_response
-        expect(client_response[:errors][:email]).to eq ["is invalid"]
+        expect(client_response[:errors][:email]).to include "is invalid"
       end
 
       it { should respond_with 422 }
