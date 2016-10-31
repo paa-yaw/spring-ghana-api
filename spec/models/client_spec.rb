@@ -17,7 +17,7 @@ RSpec.describe Client, type: :model do
 
   # validation specs
 
-  @validated_attributes = [ :email, :first_name, :last_name, :location, :auth_token ]
+  @validated_attributes = [ :email, :first_name, :last_name, :location ]
 
   @validated_attributes.each do |attribute|
     it { should validate_presence_of attribute }

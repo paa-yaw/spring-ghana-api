@@ -9,7 +9,7 @@ class Client < ActiveRecord::Base
   
   before_create :generate_auth_token! 
 
-  validates :first_name, :last_name, :location, :auth_token, presence: true
+  validates :first_name, :last_name, :location, presence: true
   validates :auth_token, uniqueness: true
 
   def generate_auth_token!
