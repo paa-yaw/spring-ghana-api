@@ -1,5 +1,5 @@
 class Api::V1::Admin::ClientsController < Api::V1::Admin::ApplicationController
-  before_action :set_client, only: [:show]
+  before_action :set_client, only: [:show, :update, :destroy]
   respond_to :json
 
   def index
@@ -20,6 +20,20 @@ class Api::V1::Admin::ClientsController < Api::V1::Admin::ApplicationController
       render json: { errors: @client.errors }, status: 422	
     end
   end
+
+  def update
+  	if @client.update(client_params)
+      render json: @client, status: 204, location: [:api, :admin, @client]
+    else
+      render json: { errors: @client.errors }, status: 422
+  	end
+  end
+
+  def destroy
+  	@client.destroy
+  	head 204
+  end
+
 
 
   private

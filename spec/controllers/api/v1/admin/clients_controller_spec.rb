@@ -59,6 +59,7 @@ RSpec.describe Api::V1::Admin::ClientsController, type: :controller do
  end
 
  describe "POST #create" do
+
    context "successfully" do 
      before do
        @client_attributes = FactoryGirl.attributes_for :client
@@ -93,5 +94,49 @@ RSpec.describe Api::V1::Admin::ClientsController, type: :controller do
 
      it { should respond_with 422 }
    end
+ end
+
+ describe "PUT/PATCH #update" do 
+   before { @client = FactoryGirl.create :client }
+   
+   context "successfully" do 
+     before do 
+       patch :update, {id: @client.id, client: { email: "new@email.com"} }
+     end
+
+     it "returns response in json" do 
+       client_response = json_response[:client]
+       expect(client_response[:email]).to eq "new@email.com"
+     end
+
+     it { should respond_with 204 }
+   end
+
+   context "unsuccessfully" do 
+     before do 
+       patch :update, { id: @client.id, client: { email: "bademail.com" } }
+     end
+
+     it "returns errors in json response" do 
+       client_response = json_response
+       expect(client_response).to have_key(:errors)
+     end
+
+     it "returns reason for errors in json response" do 
+       client_response = json_response
+       expect(client_response[:errors][:email]).to include "is invalid"
+     end
+
+     it { should respond_with 422 }
+   end
+ end
+
+ describe "DELETE #destroy" do 
+   before do
+     @client = FactoryGirl.create :client, admin: false
+     delete :destroy, id: @client.id 
+   end
+
+   it { should respond_with 204 }
  end
 end
