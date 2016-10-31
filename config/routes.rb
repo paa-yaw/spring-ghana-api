@@ -14,6 +14,10 @@ Rails.application.routes.draw do
                   end
                   resources :sessions, only: [:create, :destroy]
 
+    namespace :admin do 
+      resources :admins, only: [:index]  
+    end
+
   end
 
   end
