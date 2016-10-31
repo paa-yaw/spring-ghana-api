@@ -43,6 +43,8 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
         expect(@client.requests.count).to eq 0 
       end
     end
+
+    it { should respond_with 200 }
   end
 
   describe "GET #show" do 
@@ -56,6 +58,11 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
       it "should return response in json" do 
         request_response = json_response[:request]
         expect(request_response[:schedule]).to eq @request_.schedule
+      end
+
+      it "should return client embedded in json response" do 
+        request_response = json_response[:request]
+        expect(request_response[:client][:email]).to eq @client.email
       end
 
       it { should respond_with 200 }
