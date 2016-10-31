@@ -11,8 +11,22 @@ class Api::V1::Admin::ClientsController < Api::V1::Admin::ApplicationController
   	respond_with @client
   end
 
+  def create
+    @client = Client.new(client_params)
+
+    if @client.save
+      render json: @client, status: 201, location: [:api, :admin, @client]
+    else
+      render json: { errors: @client.errors }, status: 422	
+    end
+  end
+
 
   private
+
+  def client_params
+  	params.require(:client).permit(:email, :password, :password_confirmation, :first_name, :last_name, :location, :auth_token, :admin)
+  end
 
   def set_client
   	@client = Client.find(params[:id])

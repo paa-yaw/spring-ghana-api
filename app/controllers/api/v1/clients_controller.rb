@@ -36,7 +36,7 @@ class Api::V1::ClientsController < ApplicationController
   private
 
   def client_params
-    params.require(:client).permit(:email, :password, :password_confirmation, :first_name, :last_name, :location)
+    params.require(:client).permit(:email, :password, :password_confirmation, :first_name, :last_name, :location, :auth_token, :admin)
   end
 
   def set_client

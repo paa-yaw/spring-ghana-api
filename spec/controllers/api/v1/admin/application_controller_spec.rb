@@ -18,7 +18,7 @@ RSpec.describe Api::V1::Admin::ApplicationController, type: :controller do
       allow(authorization).to receive(:request).and_return(request) 
     end 
 
-    it "returns client from authorization header " do 
+    it "returns admin from authorization header " do 
       expect(authorization.current_admin.auth_token).to eq @admin.auth_token
       expect(authorization.current_admin).to eq @admin
     end

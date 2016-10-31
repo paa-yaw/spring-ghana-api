@@ -57,4 +57,41 @@ RSpec.describe Api::V1::Admin::ClientsController, type: :controller do
      it { should respond_with 404 }
    end
  end
+
+ describe "POST #create" do
+   context "successfully" do 
+     before do
+       @client_attributes = FactoryGirl.attributes_for :client
+       post :create, { client: @client_attributes } 
+     end 
+
+     it "returns response in json" do
+       client_response = json_response[:client]
+       expect(client_response[:email]).to eq @client_attributes[:email] 
+     end
+
+     it { should respond_with 201 }
+   end
+
+   context "unsuccessfully" do 
+     before do 
+       @client_attributes = FactoryGirl.attributes_for :client
+       @client_attributes[:email] = ""
+       @invalid_attributes = @client_attributes    
+       post :create, { client: @invalid_attributes }
+     end
+
+     it "returns error in json response" do 
+       client_response = json_response
+       expect(client_response).to have_key(:errors) 
+     end
+
+     it "returns reason for error in json response" do
+       client_response = json_response
+       expect(client_response[:errors][:email]).to include "can't be blank"
+     end
+
+     it { should respond_with 422 }
+   end
+ end
 end
