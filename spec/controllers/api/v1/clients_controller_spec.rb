@@ -12,7 +12,7 @@ RSpec.describe Api::V1::ClientsController, type: :controller do
 
       it "returns response in json" do 
         client_response = json_response
-        expect(client_response[:email]).to eq @client.email
+        expect(client_response[:client][:email]).to eq @client.email
       end
 
       it { should respond_with 200 }
@@ -47,7 +47,7 @@ RSpec.describe Api::V1::ClientsController, type: :controller do
 
       it "returns response in json" do
         client_response = json_response
-        expect(client_response[:email]).to eq @client_attributes[:email]
+        expect(client_response[:client][:email]).to eq @client_attributes[:email]
       end
 
       it { should respond_with 201 }
@@ -86,7 +86,7 @@ RSpec.describe Api::V1::ClientsController, type: :controller do
 
       it "returns response in json" do 
         client_response = json_response
-        expect(client_response[:email]).to eq "new@email.com"
+        expect(client_response[:client][:email]).to eq "new@email.com"
       end
 
       it { should respond_with 204 }

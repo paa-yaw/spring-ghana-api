@@ -17,10 +17,15 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
       end
 
       it "should return list of requests in json" do 
-        requests_response = json_response
+        requests_response = json_response[:requests]
         # expect(requests_response[:requests]).to have(5).items
         expect(@client.requests.count).to eq 5 
       end
+
+      # it "should contain client detail in returned json response" do 
+      #   request_response = json_response
+      #   expect(request_response[:client]).to be_present
+      # end
 
       it { should respond_with 200 }
     end 
@@ -48,7 +53,7 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
 
       it "should return response in json" do 
         request_response = json_response
-        expect(request_response[:schedule]).to eq @request_.schedule
+        expect(request_response[:request][:schedule]).to eq @request_.schedule
       end
 
       it { should respond_with 200 }
@@ -83,7 +88,7 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
 
       it "returns response in json" do 
         request_response = json_response
-        expect(request_response[:schedule]).to eq @request_attributes[:schedule]
+        expect(request_response[:request][:schedule]).to eq @request_attributes[:schedule]
       end
 
       it { should respond_with 201 }
@@ -127,7 +132,7 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
 
       it "returns response in json" do 
         request_response = json_response
-        expect(request_response[:schedule]).to eq "twice a week, mondays and fridays"
+        expect(request_response[:request][:schedule]).to eq "twice a week, mondays and fridays"
       end
 
       it { should respond_with 200 }

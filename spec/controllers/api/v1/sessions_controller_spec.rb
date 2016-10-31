@@ -15,7 +15,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
 
     it "successfully" do
       @client.reload
-      expect(json_response[:auth_token]).to eq @client.auth_token 
+      expect(json_response[:client][:auth_token]).to eq @client.auth_token 
     end
 
       it { should respond_with 200 }
