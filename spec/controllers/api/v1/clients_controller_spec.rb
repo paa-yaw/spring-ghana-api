@@ -15,11 +15,6 @@ RSpec.describe Api::V1::ClientsController, type: :controller do
         expect(client_response[:client][:email]).to eq @client.email
       end
 
-      it "returns respons in json containing ids of associated requests" do 
-        client_response = json_response[:client]
-        expect(client_response[:request_ids]).to eq []
-      end
-
       it { should respond_with 200 }
     end 
 

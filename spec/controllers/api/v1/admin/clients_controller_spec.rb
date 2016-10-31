@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Admin::AdminsController, type: :controller do
+RSpec.describe Api::V1::Admin::ClientsController, type: :controller do
 
   before do
     @admin = FactoryGirl.create :client, admin: true 
@@ -16,11 +16,23 @@ RSpec.describe Api::V1::Admin::AdminsController, type: :controller do
       end 
 
       it "returns a json response of all clients viewed by admin" do 
- 	    expect(@clients).to eq 5	
+ 	      expect(@clients).to eq 5	
       end
 
       it { should respond_with 200 }   
     end
   end
+
+  # describe "GET #show" do 
+  #   before do 
+  #     @client = FactoryGirl.create :client, admin: false
+  #   end
+
+  #   context "returns response in json" do 
+  #     before do 
+  #       get :show, id: @client.id
+  #     end
+  #   end
+  # end
 
 end

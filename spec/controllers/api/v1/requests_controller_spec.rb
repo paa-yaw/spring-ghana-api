@@ -43,8 +43,6 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
         expect(@client.requests.count).to eq 0 
       end
     end
-
-    it { should respond_with 200 }
   end
 
   describe "GET #show" do 

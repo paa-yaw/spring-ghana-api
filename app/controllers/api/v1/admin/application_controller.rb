@@ -6,9 +6,7 @@ class Api::V1::Admin::ApplicationController < ApplicationController
   private 
 
 
-  def authorize_admin!
-    authenticate_with_token!
-
-    render json: { errors: "You must have admin priviledges to be allowed!" }, status: 401 unless current_client.admin?
+  def authorize_admin!	
+    authenticate_with_token_and_authorize!
   end
 end
