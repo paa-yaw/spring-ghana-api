@@ -12,7 +12,6 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
     context "successful GET request for index of requests for a client" do 
       before do 
         requests = 5.times { FactoryGirl.create :request, client: @client }
-        api_authorization_headers @client.auth_token
         get :index, client_id: @client.id
       end
 
@@ -34,7 +33,6 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
 
     context "if no requests created for client" do 
       before do
-        api_authorization_headers @client.auth_token
         get :index, client_id: @client.id
       end
 
