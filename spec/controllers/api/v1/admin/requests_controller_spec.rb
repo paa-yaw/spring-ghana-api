@@ -36,7 +36,7 @@ RSpec.describe Api::V1::Admin::RequestsController, type: :controller do
       before do
         @client = FactoryGirl.create :client
         @request_ = FactoryGirl.create :request, client: @client
-        get :show, id: @request_.id
+        get :show, client_id: @client.id, id: @request_.id
       end
 
       it "returns response in json" do 
@@ -54,7 +54,8 @@ RSpec.describe Api::V1::Admin::RequestsController, type: :controller do
 
     context "unsuccessful GET request" do 
       before do
-        get :show, id: "wrong id"
+        @client = FactoryGirl.create :client
+        get :show, client_id: @client, id: "wrong id"
       end
 
       it "returns error in json response" do 
@@ -92,5 +93,80 @@ RSpec.describe Api::V1::Admin::RequestsController, type: :controller do
 
       it { should respond_with 201 }
     end
+
+    context "unsuccessful POST request" do 
+      before do 
+        @client = FactoryGirl.create :client
+        @request_attributes = FactoryGirl.attributes_for :request
+        @request_attributes[:bedrooms] = "two"
+        @invalid_attributes = @request_attributes
+        post :create, { client_id: @client.id, request: @invalid_attributes }
+      end
+
+      it "returns errors in json response" do 
+        request_response = json_response
+        expect(request_response).to have_key(:errors)
+      end
+
+      it "returns reason for errors in json response" do 
+        request_response = json_response
+        expect(request_response[:errors][:bedrooms]).to include "is not a number"
+      end
+
+      it { should respond_with 422 }
+    end
+  end
+
+  describe "PUT/PATCH #update" do 
+    
+    context "successful update" do 
+      before do 
+        @client = FactoryGirl.create :client
+        @request_ = FactoryGirl.create :request, client: @client
+        patch :update, { client_id: @client.id, id: @request_.id, request: { schedule: "every single day" } }
+      end
+
+      it "returns response in json" do 
+        request_response = json_response[:request]
+        expect(request_response[:schedule]).to eq "every single day"
+      end
+
+      it "return object in json containing client detail" do 
+        request_response = json_response[:request]
+        expect(request_response[:client]).to be_present
+      end
+
+      it { should respond_with 204 }
+    end
+
+    context "unsuccessful update" do
+      before do 
+        @client = FactoryGirl.create :client
+        @request_ = FactoryGirl.create :request, client: @client
+        patch :update, { client_id: @client.id, id: @request_.id, request: { bathrooms: "five" } }    
+      end
+
+      it "returns error in json resonse" do 
+        request_response = json_response
+        expect(request_response).to have_key(:errors)
+      end
+
+      it "returns reason for error in json response" do 
+        request_response = json_response
+        expect(request_response[:errors][:bathrooms]).to include "is not a number"
+      end
+
+      it { should respond_with 422 }
+    end
+  end
+
+  context "DELETE #destroy" do 
+    before do
+      @client = FactoryGirl.create :client
+      @request_ = FactoryGirl.create :request, client: @client
+      delete :destroy, client_id: @client, id: @request_.id
+    end
+
+    it { should respond_with 204 }
   end
 end
