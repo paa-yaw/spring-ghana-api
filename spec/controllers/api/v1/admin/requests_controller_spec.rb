@@ -21,6 +21,76 @@ RSpec.describe Api::V1::Admin::RequestsController, type: :controller do
       it "returns 4 requests" do 
       	expect(Request.count).to eq 4
       end
+
+      it "returns client details in each request in json response" do 
+        requests_response = json_response[:requests]
+        requests_response.each do |request_response|
+          expect(request_response[:client]).to be_present
+        end
+      end
   	end
+  end
+
+  describe "GET #show" do
+    context "successful GET request" do 
+      before do
+        @client = FactoryGirl.create :client
+        @request_ = FactoryGirl.create :request, client: @client
+        get :show, id: @request_.id
+      end
+
+      it "returns response in json" do 
+        request_response = json_response[:request]
+        expect(request_response[:bedrooms]).to eq @request_.bedrooms
+      end
+
+      it { should respond_with 200 }
+
+      it "request response contains client details in json response" do 
+        request_response = json_response[:request]
+        expect(request_response[:client][:email]).to eq @client.email
+      end
+    end
+
+    context "unsuccessful GET request" do 
+      before do
+        get :show, id: "wrong id"
+      end
+
+      it "returns error in json response" do 
+        request_response = json_response
+        expect(request_response).to have_key(:errors)
+      end
+
+      it "returns reason for error in json response" do 
+        request_response = json_response
+        expect(request_response[:errors]).to eq "Record Not Found!"
+      end
+
+      it { should respond_with 404 }
+    end
+  end
+
+  describe "POST #create" do 
+
+    context "successful POST request" do
+      before do
+        @client = FactoryGirl.create :client
+        @request_attributes = FactoryGirl.attributes_for :request
+        post :create, { client_id: @client.id, request: @request_attributes }
+      end
+
+      it "returns response in json" do 
+        request_response = json_response[:request]
+        expect(request_response[:schedule]).to eq @request_attributes[:schedule]
+      end
+
+      it "return object in json containing client detail" do 
+        request_response = json_response[:request]
+        expect(request_response[:client]).to be_present
+      end
+
+      it { should respond_with 201 }
+    end
   end
 end
