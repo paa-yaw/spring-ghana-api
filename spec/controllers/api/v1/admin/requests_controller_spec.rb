@@ -31,6 +31,36 @@ RSpec.describe Api::V1::Admin::RequestsController, type: :controller do
   	end
   end
 
+  describe "GET #client_request" do 
+
+    context "admin can view requests that belong to a particular request" do     
+      before do
+        @client = FactoryGirl.create :client
+        5.times { FactoryGirl.create :request, client: @client }
+        get :client_requests, client_id: @client.id
+      end
+
+      # it "returns response in json" do 
+      #   requests_response = json_response[:requests]
+      # end
+
+      it "returns 5 requests that belong to a client" do 
+        expect(@client.requests.count).to eq 5
+      end
+
+      it "each request belongs to this client" do
+        client_requests_response = json_response[:requests]
+        client_requests_response.each do |client_request_response|
+          expect(client_request_response[:client][:email]).to eq @client.email
+        end
+      end
+
+      it { should respond_with 200 }
+    end
+
+
+  end
+
   describe "GET #show" do
     context "successful GET request" do 
       before do

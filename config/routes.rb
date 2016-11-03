@@ -16,13 +16,15 @@ Rails.application.routes.draw do
 
     namespace :admin do 
       resources :clients, only: [:index, :show, :create,:update, :destroy] do 
-        resources :requests, only: [:show, :create, :update, :destroy]
+        resources :requests, only: [:show, :create, :update, :destroy] do 
+          get 'client_requests', on: :collection
+        end
       end 
 
       resources :requests, only: [:index]
     end
-
   end
+
 
   end
 end

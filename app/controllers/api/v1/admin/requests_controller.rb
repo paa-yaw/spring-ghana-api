@@ -37,6 +37,11 @@ class Api::V1::Admin::RequestsController < Api::V1::Admin::ApplicationController
   	head 204
   end
 
+  def client_requests
+  	@client_requests = @client.requests
+  	respond_with @client_requests
+  end
+
 
 
 
