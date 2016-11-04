@@ -15,11 +15,12 @@ RSpec.describe Api::V1::RequestsController, type: :controller do
         get :index, client_id: @client.id
       end
 
-      it "should return list of requests in json" do 
+
+      it "should return response in json" do 
         requests_response = json_response[:requests]
-        # expect(requests_response[:requests]).to have(5).items
-        expect(@client.requests.count).to eq 5 
+        expect(requests_response).to have(5).items
       end
+
 
       it "should contain client detail in returned json response" do 
         requests_response = json_response[:requests]

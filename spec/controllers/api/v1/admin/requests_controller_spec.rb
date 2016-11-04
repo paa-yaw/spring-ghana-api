@@ -15,12 +15,9 @@ RSpec.describe Api::V1::Admin::RequestsController, type: :controller do
   	context "admin can view all requests" do 
       it "returns response as json" do 
       	requests_response = json_response[:requests]
-      	# expect(requests_response).to have(4).items
+      	expect(requests_response).to have(4).items
       end
 
-      it "returns 4 requests" do 
-      	expect(Request.count).to eq 4
-      end
 
       it "returns client details in each request in json response" do 
         requests_response = json_response[:requests]
@@ -40,13 +37,11 @@ RSpec.describe Api::V1::Admin::RequestsController, type: :controller do
         get :client_requests, client_id: @client.id
       end
 
-      # it "returns response in json" do 
-      #   requests_response = json_response[:requests]
-      # end
-
-      it "returns 5 requests that belong to a client" do 
-        expect(@client.requests.count).to eq 5
+      it "returns response in json" do 
+        requests_response = json_response[:requests]
+        expect(requests_response).to have(5).items
       end
+
 
       it "each request belongs to this client" do
         client_requests_response = json_response[:requests]

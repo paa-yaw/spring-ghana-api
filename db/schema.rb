@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161028191648) do
+ActiveRecord::Schema.define(version: 20161104221413) do
 
   create_table "clients", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -49,5 +49,19 @@ ActiveRecord::Schema.define(version: 20161028191648) do
   end
 
   add_index "requests", ["client_id"], name: "index_requests_on_client_id"
+
+  create_table "workers", force: :cascade do |t|
+    t.string   "first_name",   default: ""
+    t.string   "last_name",    default: ""
+    t.integer  "age",          default: 0
+    t.string   "sex",          default: ""
+    t.string   "phone_number", default: ""
+    t.text     "location",     default: ""
+    t.text     "experience",   default: ""
+    t.decimal  "min_wage",     default: 0.0
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "email",        default: ""
+  end
 
 end

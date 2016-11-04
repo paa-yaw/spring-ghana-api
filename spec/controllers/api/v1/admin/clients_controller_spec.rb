@@ -15,8 +15,9 @@ RSpec.describe Api::V1::Admin::ClientsController, type: :controller do
         get :index
       end 
 
-      it "returns a json response of all clients viewed by admin" do 
- 	      expect(@clients).to eq 5	
+      it "returns response in json" do 
+        client_response = json_response[:clients]
+        expect(client_response).to have(5).items
       end
 
       it { should respond_with 200 }   
