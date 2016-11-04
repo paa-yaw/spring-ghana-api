@@ -6,19 +6,30 @@ RSpec.describe Worker, type: :model do
 
   subject { @worker }
 
-  @worker_attributes = [:first_name, :last_name, :age, :sex, :phone_number, :location, :experience, :min_wage, :email]
+  @worker_attributes = [:first_name, :last_name, :age, :sex, :phone_number, :location, :experience, :min_wage, :email, :password,
+  	:password_confirmation]
 
+
+  # validates response to attributes 
   @worker_attributes.each do |attribute|
     it { should respond_to attribute }
   end
 
   it { should validate_uniqueness_of(:email) }
+  it { should validate_confirmation_of :password  }
+  it { should validate_length_of(:phone_number).is_equal_to(10) }
+
+
+  
 
   @worker_attributes.delete(:email)
+  @worker_attributes.delete(:password)
+  @worker_attributes.delete(:password_confirmation)
+  @attributes_without_email_or_password = @worker_attributes
+  
 
-  @attributes_without_email = @worker_attributes
-
-  @attributes_without_email.each do |attribute|
+  # validates presence of attributes
+  @attributes_without_email_or_password.each do |attribute|
     it { should validate_presence_of attribute }
   end
 
