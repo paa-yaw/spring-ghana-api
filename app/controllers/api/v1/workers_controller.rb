@@ -1,5 +1,6 @@
 class Api::V1::WorkersController < ApplicationController
-  before_action :set_worker, only: [:show, :update, :destroy]	
+  before_action :set_worker, only: [:show, :update]
+  before_action :authenticate_worker_with_token!, only: [:update, :destroy]	
   respond_to :json
 
   def show
@@ -25,7 +26,7 @@ class Api::V1::WorkersController < ApplicationController
   end
 
   def destroy
-  	@worker.destroy
+  	@current_worker.destroy
   	head 204
   end
 
@@ -35,7 +36,7 @@ class Api::V1::WorkersController < ApplicationController
 
   def worker_params
   	params.require(:worker).permit(:first_name, :last_name, :age, :sex, :phone_number, :location, :experience, :min_wage, :email, 
-  	:password, :password_confirmation)
+  	:password, :password_confirmation, :auth_token)
   end
 
   def set_worker

@@ -79,6 +79,7 @@ RSpec.describe Api::V1::WorkersController, type: :controller do
       
       before do 
       	@worker = FactoryGirl.create :worker
+      	api_authorization_headers @worker.auth_token
       end
 
       context "successful PUT/PATCH request" do 
@@ -118,6 +119,7 @@ RSpec.describe Api::V1::WorkersController, type: :controller do
   describe "DELETE #destroy" do 
     before do 
       @worker = FactoryGirl.create :worker
+      api_authorization_headers @worker.auth_token
       delete :destroy, id: @worker.id	
     end	
 
