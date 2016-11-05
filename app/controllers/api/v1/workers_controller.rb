@@ -18,6 +18,8 @@ class Api::V1::WorkersController < ApplicationController
   end
 
   def update
+    @worker = current_worker
+    
     if @worker.update(worker_params)
       render json: @worker, status: 200, location: [:api, @worker]
     else

@@ -1,27 +1,53 @@
 class Api::V1::SessionsController < ApplicationController
   respond_to :json
 
+ 
   def create 
-    client_password = params[:session][:password]
-    client_email = params[:session][:email]
+    @password = params[:session][:password]
+    @email = params[:session][:email]
 
 
-    client = client_email.present? && Client.find_by(email: client_email)
-
-    if client.valid_password? client_password
-      sign_in client
-      client.generate_auth_token!
-      client.save
-      render json: client, status: 200, location: [:api, client]
-    else
-      render json: { errors: "Invalid email or password" }, status: 422	
+    @user = @email.present? && (Client.find_by(email: @email) || Worker.find_by(email: @email))
+    
+    if @user.class == Client
+      if @user.valid_password? @password
+        sign_in @user
+        @user.generate_auth_token!
+        @user.save
+        render json: @user, status: 200, location: [:api, @user]
+      else
+        render json: { errors: "Invalid email or password" }, status: 422 
+      end
+    elsif @user.class == Worker
+      if worker_authenticated?(@user, @password)
+        # sign_in @user
+        session[:worker_id] = @user.id
+        @user.generate_auth_token!
+        @user.save
+        render json: @user, status: 200, location: [:api, @user]
+      else
+        render json: { errors: "Invalid email or password" }, status: 422 
+      end
     end
   end
 
+
   def destroy
-  	client = Client.find_by(auth_token: params[:id])
-    client.generate_auth_token!
-    client.save
-  	head 204
+    user = Client.find_by(auth_token: params[:id]) || Worker.find_by(auth_token: params[:id])
+    user.generate_auth_token!
+    user.save
+    head 204
+  end
+end
+
+
+private 
+
+
+def worker_authenticated?(user, password)
+  if user.authenticate(password)
+    return true
+  else
+    return false
   end
 end

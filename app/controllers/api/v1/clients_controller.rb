@@ -18,6 +18,8 @@ class Api::V1::ClientsController < ApplicationController
   end
 
   def update
+    @client = current_client
+
   	if @client.update(client_params)
       render json: @client, status: 200, location: [:api, @client]
     else
