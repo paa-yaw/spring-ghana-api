@@ -2,6 +2,8 @@ class Worker < ActiveRecord::Base
 
   has_secure_password
 
+  has_and_belongs_to_many :requests
+
   
   validates :first_name, :last_name, :age, :sex, :phone_number, :location, :experience, :min_wage, presence: true
   validates_format_of :email,:with => Devise::email_regexp, allow_blank: true

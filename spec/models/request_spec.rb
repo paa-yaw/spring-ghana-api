@@ -25,9 +25,11 @@ RSpec.describe Request, type: :model do
   end
 
   # association specs
-
   it { should belong_to :client }
+  it { should have_and_belong_to_many :workers }
 
+
+  # testing scopes
   describe ".filter_by_bedroom_number" do
     before do 
       @request1 = FactoryGirl.create :request, bedrooms: 5

@@ -35,6 +35,10 @@ RSpec.describe Worker, type: :model do
     it { should validate_presence_of attribute }
   end
 
+ # association specs
+  it { should have_and_belong_to_many :requests}
+
+
   it { should be_valid }
 
   describe "generate_auth_token!" do 
@@ -60,5 +64,4 @@ RSpec.describe Worker, type: :model do
        @worker.save 
       end
   end
-
 end
