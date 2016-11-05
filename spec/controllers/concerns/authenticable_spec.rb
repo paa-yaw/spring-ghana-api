@@ -68,5 +68,5 @@ describe Authentication do
     end
 
     it { should respond_with 401 }
-  end
+  endf
 end

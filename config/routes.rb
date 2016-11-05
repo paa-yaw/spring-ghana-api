@@ -22,6 +22,8 @@ Rails.application.routes.draw do
         end
       end 
 
+      resources :workers, only: [:index, :show, :create, :update, :destroy]
+
       resources :requests, only: [:index]
     end
   end
