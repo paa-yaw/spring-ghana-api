@@ -13,6 +13,7 @@ Rails.application.routes.draw do
                     resources :requests, only: [:index, :show, :create, :update, :destroy]
                   end
                   resources :sessions, only: [:create, :destroy]
+                  resources :workers, only: [:show, :create, :update, :destroy]
 
     namespace :admin do 
       resources :clients, only: [:index, :show, :create,:update, :destroy] do 

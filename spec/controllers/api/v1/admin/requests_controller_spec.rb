@@ -161,7 +161,7 @@ RSpec.describe Api::V1::Admin::RequestsController, type: :controller do
         expect(request_response[:client]).to be_present
       end
 
-      it { should respond_with 204 }
+      it { should respond_with 200 }
     end
 
     context "unsuccessful update" do

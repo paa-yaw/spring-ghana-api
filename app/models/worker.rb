@@ -6,4 +6,5 @@ class Worker < ActiveRecord::Base
   validates_format_of :email,:with => Devise::email_regexp, allow_blank: true
   validates :email, uniqueness: true
   validates :phone_number, length: { is: 10 }
+  validates :age, numericality: { only_integer: true }
 end

@@ -18,9 +18,10 @@ RSpec.describe Worker, type: :model do
   it { should validate_uniqueness_of(:email) }
   it { should validate_confirmation_of :password  }
   it { should validate_length_of(:phone_number).is_equal_to(10) }
+  it { should validate_numericality_of(:age).only_integer }
 
 
-  
+
 
   @worker_attributes.delete(:email)
   @worker_attributes.delete(:password)

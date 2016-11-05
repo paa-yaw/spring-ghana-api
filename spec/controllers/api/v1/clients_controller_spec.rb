@@ -89,7 +89,7 @@ RSpec.describe Api::V1::ClientsController, type: :controller do
         expect(client_response[:client][:email]).to eq "new@email.com"
       end
 
-      it { should respond_with 204 }
+      it { should respond_with 200 }
     end
 
     context "unsuccessfully" do

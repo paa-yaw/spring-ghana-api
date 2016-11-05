@@ -26,7 +26,7 @@ class Api::V1::Admin::RequestsController < Api::V1::Admin::ApplicationController
 
   def update
   	if @request.update(request_params)
-      render json: @request, status: 204, location: [:api, :admin, @client, @request]	
+      render json: @request, status: 200, location: [:api, :admin, @client, @request]	
     else
       render json: { errors: @request.errors }, status: 422
   	end

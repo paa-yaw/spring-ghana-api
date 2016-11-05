@@ -23,7 +23,7 @@ class Api::V1::Admin::ClientsController < Api::V1::Admin::ApplicationController
 
   def update
   	if @client.update(client_params)
-      render json: @client, status: 204, location: [:api, :admin, @client]
+      render json: @client, status: 200, location: [:api, :admin, @client]
     else
       render json: { errors: @client.errors }, status: 422
   	end
