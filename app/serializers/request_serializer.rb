@@ -3,5 +3,5 @@ class RequestSerializer < ActiveModel::Serializer
    :updated_at
 
   has_one :client 
-  has_many :workers
+  has_many :workers, embed: :ids
 end

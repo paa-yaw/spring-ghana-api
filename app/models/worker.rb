@@ -5,7 +5,7 @@ class Worker < ActiveRecord::Base
   belongs_to :request
 
   
-  validates :first_name, :last_name, :age, :sex, :phone_number, :location, :experience, :min_wage, presence: true
+  validates :first_name, :last_name, :age, :sex, :phone_number, :location, :experience, :min_wage, :status, presence: true
   validates_format_of :email,:with => Devise::email_regexp, allow_blank: true
   validates :email, :auth_token, uniqueness: true
   validates :phone_number, length: { is: 10 }
@@ -17,5 +17,9 @@ class Worker < ActiveRecord::Base
     begin
       self.auth_token = Devise.friendly_token
     end while self.class.exists?(auth_token: auth_token)
+  end
+
+  def engage
+    self.update(status: "assigned")
   end
 end

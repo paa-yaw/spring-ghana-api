@@ -1,6 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Admin::AssignWorkersController, type: :controller do
+RSpec.describe Api::V1::Admin::AssignWorkersToRequestsController, type: :controller do
+
   
   before do 
   	@admin = FactoryGirl.create :client, admin: true
@@ -22,7 +23,7 @@ RSpec.describe Api::V1::Admin::AssignWorkersController, type: :controller do
 
       it "should return request with associated/assigned workers in json response" do 
         request_response = json_response[:request]
-        expect(request_response).to have_key(:workers)
+        expect(request_response).to have_key(:worker_ids)
       end
 
       it { should respond_with 200 }
@@ -47,21 +48,29 @@ RSpec.describe Api::V1::Admin::AssignWorkersController, type: :controller do
     end
   end
 
+
+
+
   describe "GET #assign_worker" do
   	before do 
-  	  @request1 = FactoryGirl.create :request
-  	  @request2 = FactoryGirl.create :request
-  	  @worker1 = FactoryGirl.create :worker 
-  	  @worker2 = FactoryGirl.create :worker
-  	  @worker3 = FactoryGirl.create :worker
-  	  @worker4 = FactoryGirl.create :worker
+  	 @workers = FactoryGirl.create(:request_with_workers, workers_count: 3).workers
+  	 @worker1 = @workers.first
+     @request1 = @workers.first.request
 
   	  get :assign_worker, worker_id: @worker1.id, id: @request1.id
   	end
 
   	it "should return json response with request and assigned worker" do 
-      request_response = json_response
-      expect(request_response).to eq 1
+      request_response = json_response[:request]
+      expect(request_response[:worker_ids]).to include @worker1.id
+  	end
+
+  	it "status of worker should be changed from unassigned to assigned" do
+  	  expect{@worker1.engage}.to change{@worker1.status}.from("unassigned").to("assigned")
+  	end
+
+  	it "status of request should be changed from unresolved to resolved" do 
+  	  expect{@request1.resolve}.to change{@request1.status}.from("unresolved").to("resolved")	
   	end
   end
 

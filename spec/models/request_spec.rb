@@ -5,7 +5,7 @@ RSpec.describe Request, type: :model do
 
   subject { @request }
 
-  @request_attributes = [:bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule, :client_id]
+  @request_attributes = [:bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule, :client_id, :status]
   
 
   # response specs of attributes
@@ -27,6 +27,14 @@ RSpec.describe Request, type: :model do
   # association specs
   it { should belong_to :client }
   it { should have_many :workers }
+  
+
+  describe "should respond to resolve" do 
+
+    it { should respond_to :resolve }
+  end
+
+
 
 
   # testing scopes

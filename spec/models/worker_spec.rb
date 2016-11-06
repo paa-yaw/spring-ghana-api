@@ -7,7 +7,7 @@ RSpec.describe Worker, type: :model do
   subject { @worker }
 
   @worker_attributes = [:first_name, :last_name, :age, :sex, :phone_number, :location, :experience, :min_wage, :email, :password,
-  	:password_confirmation]
+  	:password_confirmation, :status]
 
 
   # validates response to attributes 
@@ -60,8 +60,13 @@ RSpec.describe Worker, type: :model do
   	  before { @worker = FactoryGirl.build :worker }
 
       it "successfully" do
-       expect(@worker).to receive(:generate_auth_token!)
-       @worker.save 
+        expect(@worker).to receive(:generate_auth_token!)
+        @worker.save 
       end
+  end
+
+  describe "should respond to the method engage" do 
+    
+    it { should respond_to :engage }
   end
 end

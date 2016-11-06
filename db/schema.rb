@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161106111924) do
+ActiveRecord::Schema.define(version: 20161106145951) do
 
   create_table "clients", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -43,9 +43,10 @@ ActiveRecord::Schema.define(version: 20161106111924) do
     t.integer  "kitchens",        default: 0
     t.datetime "time_of_arrival"
     t.text     "schedule"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.integer  "client_id"
+    t.string   "status",          default: "unresolved"
   end
 
   add_index "requests", ["client_id"], name: "index_requests_on_client_id"
@@ -67,12 +68,13 @@ ActiveRecord::Schema.define(version: 20161106111924) do
     t.text     "location",        default: ""
     t.text     "experience",      default: ""
     t.decimal  "min_wage",        default: 0.0
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.string   "email",           default: ""
     t.string   "password_digest"
     t.string   "auth_token"
     t.integer  "request_id"
+    t.string   "status",          default: "unassigned"
   end
 
   add_index "workers", ["request_id"], name: "index_workers_on_request_id"

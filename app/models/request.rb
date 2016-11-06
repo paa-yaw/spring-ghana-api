@@ -2,8 +2,13 @@ class Request < ActiveRecord::Base
 
   belongs_to :client
   has_many :workers
+
+
+  def resolve
+    self.update(status: "resolved")
+  end
    
-  validates :bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule, :client_id, presence: true
+  validates :bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule, :client_id, :status, presence: true
   validates :bedrooms, :bathrooms, :living_rooms, :kitchens, numericality: { greater_than_or_equal_to: 0 }
 
   scope :filter_by_bedroom_number, lambda { |number| 

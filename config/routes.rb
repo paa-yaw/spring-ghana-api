@@ -22,8 +22,8 @@ Rails.application.routes.draw do
         end
       end 
 
-      get 'assign_workers/:id/assign_worker', to: 'assign_workers#assign_worker', as: :assign_worker
-      get 'assign_workers/:id', to: 'assign_workers#show'
+      get 'assign_workers_to_requests/:id/assign_worker/:worker_id', to: 'assign_workers_to_requests#assign_worker', as: :assign_worker
+      get 'assign_workers_to_requests/:id', to: 'assign_workers_to_requests#show'
 
       resources :workers, only: [:index, :show, :create, :update, :destroy]
 
