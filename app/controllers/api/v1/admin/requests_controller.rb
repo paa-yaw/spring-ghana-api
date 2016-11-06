@@ -1,7 +1,7 @@
 class Api::V1::Admin::RequestsController < Api::V1::Admin::ApplicationController
   respond_to :json
   before_action :set_client, except: [:index]
-  before_action :set_request, only: [:show, :update, :destroy]
+  before_action :set_client_request, only: [:show, :update, :destroy]
   
 
 
@@ -55,7 +55,7 @@ class Api::V1::Admin::RequestsController < Api::V1::Admin::ApplicationController
   	@client = Client.find(params[:client_id])
   end
 
-  def set_request
+  def set_client_request
   	@request = @client.requests.find(params[:id])
   rescue ActiveRecord::RecordNotFound
   	render json: { errors: "Record Not Found!" }, status: 404

@@ -22,4 +22,8 @@ class Worker < ActiveRecord::Base
   def engage
     self.update(status: "assigned")
   end
+
+  def disengage
+    self.update(status: "unassigned")
+  end
 end

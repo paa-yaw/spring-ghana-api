@@ -68,5 +68,6 @@ RSpec.describe Worker, type: :model do
   describe "should respond to the method engage" do 
     
     it { should respond_to :engage }
+    it { should respond_to :disengage }
   end
 end

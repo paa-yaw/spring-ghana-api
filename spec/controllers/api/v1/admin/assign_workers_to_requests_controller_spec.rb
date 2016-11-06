@@ -52,31 +52,95 @@ RSpec.describe Api::V1::Admin::AssignWorkersToRequestsController, type: :control
 
 
   describe "GET #assign_worker" do
-  	before do 
-  	 @workers  = FactoryGirl.create(:request_with_workers, workers_count: 3).workers
-  	 @worker1  = @workers.first
-     @request1 = @workers.first.request
 
-  	  get :assign_worker, worker_id: @worker1.id, id: @request1.id
-  	end
+  	context "successfully" do 
+      before do 
+  	    @worker1 = FactoryGirl.create :worker
+      	@request1 = FactoryGirl.create :request
 
-  	it "should return json response with request and assigned worker" do 
-      request_response = json_response[:request]
-      expect(request_response[:worker_ids]).to include @worker1.id
-  	end
+  	    get :assign_worker, worker_id: @worker1.id, id: @request1.id
+  	  end
 
-  	it "status of worker should be changed from unassigned to assigned" do
-  	  expect{@worker1.engage}.to change{@worker1.status}.from("unassigned").to("assigned")
-  	end
+  	  it "should return json response with request and assigned worker" do 
+        request_response = json_response[:request]
+        expect(request_response[:worker_ids]).to include @worker1.id
+  	  end
 
-  	it "status of request should be changed from unresolved to resolved" do 
-  	  expect{@request1.resolve}.to change{@request1.status}.from("unresolved").to("resolved")	
-  	end
+  	  it "status of worker should be changed from unassigned to assigned" do
+  	    expect{@worker1.engage}.to change{@worker1.status}.from("unassigned").to("assigned")
+  	  end
+
+  	  it "status of request should be changed from unresolved to resolved" do 
+  	    expect{@request1.resolve}.to change{@request1.status}.from("unresolved").to("resolved")	
+  	  end
+    end
+
+    context "unsuccessfully" do 
+      before do 
+      	@worker = FactoryGirl.create :worker
+      	@request1 = FactoryGirl.create :request
+  	    get :assign_worker, worker_id: "wrong worker id", id: @request1.id
+      end
+
+      it "return error in json response" do 
+      	request_response = json_response
+      	expect(request_response).to have_key(:errors)
+      end
+
+      it "returns errors if it can't find worker" do 
+      	request_response = json_response
+      	expect(request_response[:errors]).to eq "Record Not Found!"
+      end
+
+      it { should respond_with 404 }
+    end
   end
 
 
 
-  describe "#UNASSIGN worker" do 
+  describe "#GET #unassign_worker" do
+    
+    context "successfully" do   
+  	  before do
+  	    @workers  = FactoryGirl.create(:request_with_workers, workers_count: 3).workers
+  	    @worker1  = @workers.first
+        @request1 = @workers.first.request
+        @worker1.engage
+
+  	    get :unassign_worker, worker_id: @worker1.id, id: @request1.id   
+  	  end
+
+  	  it "return response in json that does not include the worker" do 
+  	    request_response = json_response[:request]
+  	    expect(request_response[:worker_ids]).not_to include @worker1.id  	  	
+  	  end
+
+  	  it "status of worker should be changed from unassigned to assigned" do
+  	     expect{@worker1.disengage}.to change{@worker1.status}.from("assigned").to("unassigned")
+  	  end
+
+  	  it { should respond_with 200 }
+
+  	  context "unsuccessfully" do 
+  	  	before do 
+  	  	  @worker = FactoryGirl.create :worker
+  	  	  @request1 = FactoryGirl.create :request
+  	  	  get :assign_worker, worker_id: "wrong worker id", id: @request1.id
+  	  	end
+
+  	  	it "return error in json response" do 
+  	  	  request_response = json_response
+  	  	  expect(request_response).to have_key(:errors)
+  	  	end
+
+  	  	it "returns errors if it can't find worker" do 
+  	  	  request_response = json_response
+  	  	  expect(request_response[:errors]).to eq "Record Not Found!"
+  	  	end
+
+  	  	it { should respond_with 404 }
+  	  end
+  	end
   end
 
 
