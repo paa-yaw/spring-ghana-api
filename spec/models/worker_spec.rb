@@ -36,7 +36,7 @@ RSpec.describe Worker, type: :model do
   end
 
  # association specs
-  it { should have_and_belong_to_many :requests}
+  it { should belong_to :request }
 
 
   it { should be_valid }

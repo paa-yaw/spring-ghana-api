@@ -9,7 +9,7 @@ RSpec.describe Api::V1::Admin::WorkersController, type: :controller do
 
    describe "GET #index" do
 
-    context "admin can view all clients on application" do 
+    context "admin can view all workers on application" do 
       before do 
         @workers = 5.times { FactoryGirl.create :worker }
         get :index

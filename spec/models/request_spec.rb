@@ -26,7 +26,7 @@ RSpec.describe Request, type: :model do
 
   # association specs
   it { should belong_to :client }
-  it { should have_and_belong_to_many :workers }
+  it { should have_many :workers }
 
 
   # testing scopes

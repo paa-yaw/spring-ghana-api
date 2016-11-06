@@ -1,22 +1,4 @@
 FactoryGirl.define do
-  factory :request do
-  	bedrooms { rand(1..100) }
-  	bathrooms { rand(1..100) }
-  	living_rooms { rand(1..100) }
-  	kitchens { rand(1..100) }
-  	time_of_arrival { Time.now }
-  	schedule { "3 times a week, mondays, wednesdays and fridays" }
-  	client   
-
-  	factory :request_with_workers do 
-        transient do 
-          workers_count 5
-        end 
-        after(:create) do |request, evaluator|
-          create_list(:worker, evaluator.workers_count, requests: [request])
-        end 
-    end
-  end
 
   factory :worker do
     first_name { FFaker::Name.first_name }
@@ -30,15 +12,29 @@ FactoryGirl.define do
     location { "Accra, East Legon" }
     experience { FFaker::Lorem.sentence }
     min_wage 100.00
+    request
+  end
 
-    factory :worker_with_requests do 
-      transient do 
-      	requests_count 5
-      end
 
-      after(:create) do |worker, evaluator|
-      	create_list(:request, evaluator.requests_count, workers: [worker])
-      end
+
+  factory :request do
+    bedrooms { rand(1..100) }
+    bathrooms { rand(1..100) }
+    living_rooms { rand(1..100) }
+    kitchens { rand(1..100) }
+    time_of_arrival { Time.now }
+    schedule { "3 times a week, mondays, wednesdays and fridays" }
+    client   
+
+  factory :request_with_workers do 
+    transient do 
+      workers_count 5
     end
+
+    after(:create) do |request, evaluator|
+      create_list(:worker, evaluator.workers_count, request: request)
+    end 
+
+   end
   end
 end

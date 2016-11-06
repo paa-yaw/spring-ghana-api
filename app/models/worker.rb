@@ -2,7 +2,7 @@ class Worker < ActiveRecord::Base
 
   has_secure_password
 
-  has_and_belongs_to_many :requests
+  belongs_to :request
 
   
   validates :first_name, :last_name, :age, :sex, :phone_number, :location, :experience, :min_wage, presence: true

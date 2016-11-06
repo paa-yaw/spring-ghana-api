@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161105191329) do
+ActiveRecord::Schema.define(version: 20161106111924) do
 
   create_table "clients", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -72,6 +72,9 @@ ActiveRecord::Schema.define(version: 20161105191329) do
     t.string   "email",           default: ""
     t.string   "password_digest"
     t.string   "auth_token"
+    t.integer  "request_id"
   end
+
+  add_index "workers", ["request_id"], name: "index_workers_on_request_id"
 
 end
