@@ -3,4 +3,5 @@ class RequestSerializer < ActiveModel::Serializer
    :updated_at
 
   has_one :client 
+  has_many :workers
 end
