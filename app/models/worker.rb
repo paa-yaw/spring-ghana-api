@@ -20,10 +20,10 @@ class Worker < ActiveRecord::Base
   end
 
   def engage
-    self.update(status: "assigned")
+    self.update(status: "ASSIGNED")
   end
 
   def disengage
-    self.update(status: "unassigned")
+    self.update(status: "UNASSIGNED")
   end
 end

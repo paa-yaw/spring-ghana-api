@@ -25,6 +25,8 @@ Rails.application.routes.draw do
       get 'assign_workers_to_requests/:id/assign_worker/:worker_id', to: 'assign_workers_to_requests#assign_worker', as: :assign_worker
       get 'assign_workers_to_requests/:id', to: 'assign_workers_to_requests#show'
       get 'assign_workers_to_requests/:id/unassign_worker/:worker_id', to: 'assign_workers_to_requests#unassign_worker', as: :unassign_worker 
+      get 'assign_workers_to_requests/:id/complete_request', to: 'assign_workers_to_requests#complete_request', as: :complete_request
+
 
       resources :workers, only: [:index, :show, :create, :update, :destroy]
 

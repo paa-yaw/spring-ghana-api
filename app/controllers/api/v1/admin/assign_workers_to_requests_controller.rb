@@ -1,5 +1,5 @@
 class Api::V1::Admin::AssignWorkersToRequestsController < Api::V1::Admin::ApplicationController
-  before_action :set_request, only: [:assign_worker, :show, :unassign_worker]
+  before_action :set_request, only: [:assign_worker, :show, :unassign_worker, :complete_request]
   before_action :set_worker, only: [:assign_worker, :unassign_worker]	
   respond_to :json
 
@@ -29,7 +29,21 @@ class Api::V1::Admin::AssignWorkersToRequestsController < Api::V1::Admin::Applic
   	  @worker.disengage
   	  render json: @request, status: 200, location: [:api, :admin, @worker] 
   	end
+  end
 
+  # NOTE: to complete a request means to unassign all workers to that request since 
+  # it deserves no further attention. After all, the request is completed
+  def complete_request
+    if @request.workers.any?
+    	@request.workers.each do |worker|
+    	  worker.disengage	
+    	end
+      @request.workers.delete_all
+      @request.request_completed?
+      render json: @request, status: 200, location: [:api, :admin, @worker]
+    else
+      # do nothing
+    end
   end
 
 

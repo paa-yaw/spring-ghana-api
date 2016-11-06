@@ -67,11 +67,11 @@ RSpec.describe Api::V1::Admin::AssignWorkersToRequestsController, type: :control
   	  end
 
   	  it "status of worker should be changed from unassigned to assigned" do
-  	    expect{@worker1.engage}.to change{@worker1.status}.from("unassigned").to("assigned")
+  	    expect{@worker1.engage}.to change{@worker1.status}.from("UNASSIGNED").to("ASSIGNED")
   	  end
 
   	  it "status of request should be changed from unresolved to resolved" do 
-  	    expect{@request1.resolve}.to change{@request1.status}.from("unresolved").to("resolved")	
+  	    expect{@request1.resolve}.to change{@request1.status}.from("UNRESOLVED").to("RESOLVED")	
   	  end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe Api::V1::Admin::AssignWorkersToRequestsController, type: :control
   	  end
 
   	  it "status of worker should be changed from unassigned to assigned" do
-  	     expect{@worker1.disengage}.to change{@worker1.status}.from("assigned").to("unassigned")
+  	     expect{@worker1.disengage}.to change{@worker1.status}.from("ASSIGNED").to("UNASSIGNED")
   	  end
 
   	  it { should respond_with 200 }
@@ -145,7 +145,34 @@ RSpec.describe Api::V1::Admin::AssignWorkersToRequestsController, type: :control
 
 
 
-  describe "#ALTER status of request" do 
+  describe "GET #complete_request" do
+    
+    before do
+      @workers = FactoryGirl.create(:request_with_workers, workers_count: 3).workers 
+      @worker1 = @workers.first
+      @request1 = @worker1.request	
+      @request1.status = "RESOLVED"
+
+      get :complete_request, id: @request1.id
+    end 
+
+    it "return changed status of request" do 
+      request_response = json_response[:request]
+      expect(request_response[:status]).to eq "COMPLETED"	
+    end
+
+    it "json response should not have workers associated anymore" do 
+      request_response = json_response[:request]
+      expect(request_response[:worker_ids]).to eq []
+    end
+
+    it "previously assigned workers each should have their status changed to UNASSIGNED on completion of a request" do
+      @workers.each do |worker|
+        expect(worker.status).to eq "UNASSIGNED"
+      end	
+    end
+
+    it { should respond_with 200 }
   end
 
 end

@@ -5,7 +5,11 @@ class Request < ActiveRecord::Base
 
 
   def resolve
-    self.update(status: "resolved")
+    self.update(status: "RESOLVED")
+  end
+
+  def request_completed?
+    self.update(status: "COMPLETED") if self.workers.empty?
   end
    
   validates :bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule, :client_id, :status, presence: true

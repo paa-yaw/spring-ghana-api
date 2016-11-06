@@ -12,6 +12,7 @@ FactoryGirl.define do
     location { "Accra, East Legon" }
     experience { FFaker::Lorem.sentence }
     min_wage 100.00
+    status "UNASSIGNED"
     request
   end
 
@@ -24,6 +25,7 @@ FactoryGirl.define do
     kitchens { rand(1..100) }
     time_of_arrival { Time.now }
     schedule { "3 times a week, mondays, wednesdays and fridays" }
+    status "UNRESOLVED"
     client   
 
   factory :request_with_workers do 
