@@ -11,7 +11,7 @@ RSpec.describe Api::V1::Admin::AssignWorkersToRequestsController, type: :control
   describe "GET #show" do 
   	context "successfully" do 
       before do 
-        @workers = FactoryGirl.create(:request_with_workers, workers_count: 2).workers
+        @workers  = FactoryGirl.create(:request_with_workers, workers_count: 2).workers
         @request_ = @workers.first.request
         get :show, id: @request_.id
       end
@@ -53,8 +53,8 @@ RSpec.describe Api::V1::Admin::AssignWorkersToRequestsController, type: :control
 
   describe "GET #assign_worker" do
   	before do 
-  	 @workers = FactoryGirl.create(:request_with_workers, workers_count: 3).workers
-  	 @worker1 = @workers.first
+  	 @workers  = FactoryGirl.create(:request_with_workers, workers_count: 3).workers
+  	 @worker1  = @workers.first
      @request1 = @workers.first.request
 
   	  get :assign_worker, worker_id: @worker1.id, id: @request1.id

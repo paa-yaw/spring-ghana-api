@@ -16,11 +16,11 @@ class Api::V1::Admin::AssignWorkersToRequestsController < Api::V1::Admin::Applic
 
   	# change status of request from unresolved to resolved
   	@request.resolve
-  	
+
   	if @request.workers.include? @worker
-      render json: @request, status: 200
+      render json: @request, status: 200, location: [:api, :admin, @request]
     else
-      render json: { errors: "could not assign worker" }, status: 422, location: [:api, :admin, @request]
+      render json: { errors: "could not assign worker" }, status: 422
     end
   end
 
