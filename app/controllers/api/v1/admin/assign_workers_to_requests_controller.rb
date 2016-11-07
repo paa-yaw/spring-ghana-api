@@ -46,13 +46,15 @@ class Api::V1::Admin::AssignWorkersToRequestsController < Api::V1::Admin::Applic
     end
   end
 
+  
+
 
   private
 
   def set_request
     @request = Request.find(params[:id])
-rescue ActiveRecord::RecordNotFound
-	render json: { errors: "Record Not Found!" }, status: 404
+  rescue ActiveRecord::RecordNotFound
+	  render json: { errors: "Record Not Found!" }, status: 404
   end
 
   def set_worker
@@ -60,5 +62,4 @@ rescue ActiveRecord::RecordNotFound
   rescue ActiveRecord::RecordNotFound
   	render json: { errors: "Record Not Found!" }, status: 404
   end
-
 end
