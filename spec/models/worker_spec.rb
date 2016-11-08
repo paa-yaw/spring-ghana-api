@@ -70,4 +70,177 @@ RSpec.describe Worker, type: :model do
     it { should respond_to :engage }
     it { should respond_to :disengage }
   end
+
+  # scopes
+
+  describe "#.filter_by_first_name" do 
+    before do 
+      @worker1 = FactoryGirl.create :worker, first_name: "Yaw"
+      @worker2 = FactoryGirl.create :worker, first_name: "Grace"
+      @worker3 = FactoryGirl.create :worker, first_name: "Akua"
+    end
+
+    it "should return worker with first name 'Akua'" do 
+      expect(Worker.filter_by_first_name('Akua').sort).to match_array([@worker3])
+    end
+  end
+
+  describe "#.filter_by_last_name" do 
+    before do 
+      @worker1 = FactoryGirl.create :worker, last_name: "Boakye"
+      @worker2 = FactoryGirl.create :worker, last_name: "Ampofo"
+      @worker3 = FactoryGirl.create :worker, last_name: "Ansah"
+    end
+
+    it "should return with last name 'Ansah'" do 
+      expect(Worker.filter_by_last_name('Ansah').sort).to match_array([@worker3])
+    end
+  end
+
+
+
+  describe "#.filter by age" do 
+
+     before do 
+       @worker1 = FactoryGirl.create :worker, age: 23
+       @worker2 = FactoryGirl.create :worker, age: 43
+       @worker3 = FactoryGirl.create :worker, age: 50
+       @worker4 = FactoryGirl.create :worker, age: 30
+       @worker5 = FactoryGirl.create :worker, age: 28
+       @worker6 = FactoryGirl.create :worker, age: 47
+     end
+
+     context "#.filter_by_min_age" do 
+       it "should return worker with 30 as min age" do 
+         expect(Worker.filter_by_min_age(30).sort).to match_array([@worker4, @worker2, @worker6, @worker3])
+       end
+     end
+
+     context "#.filter_by_max_age" do 
+       it "should return worker with 30 as max age" do 
+         expect(Worker.filter_by_max_age(30).sort).to match_array([@worker1, @worker5, @worker4])
+       end
+     end
+  end 
+
+
+
+  describe "#.filter_by_sex" do 
+    before do 
+      @worker1 = FactoryGirl.create :worker, sex: "male"
+      @worker2 = FactoryGirl.create :worker, sex: "female"
+    end
+
+    it "should return male worker" do 
+      expect(Worker.filter_by_sex("male").sort).to match_array([@worker1])
+    end
+
+    it "should return female worker" do 
+      expect(Worker.filter_by_sex("female").sort).to match_array([@worker2])
+    end
+  end   
+
+
+  describe "#.filter_by_status" do 
+    before do 
+      @worker1 = FactoryGirl.create :worker, status: "UNASSIGNED"
+      @worker2 = FactoryGirl.create :worker, status: "ASSIGNED"
+    end
+
+    it "should return 'UNASSIGNED' worker" do 
+      expect(Worker.filter_by_status("UNASSIGNED").sort).to match_array([@worker1])
+    end
+
+    it "should return 'ASSIGNED' worker" do 
+      expect(Worker.filter_by_status("ASSIGNED").sort).to match_array([@worker2])
+    end
+  end
+
+
+
+  describe "#.filter by level of minimum wage" do
+    before do 
+      @worker1 = FactoryGirl.create :worker, min_wage: 100.00
+      @worker2 = FactoryGirl.create :worker, min_wage: 300.00
+      @worker3 = FactoryGirl.create :worker, min_wage: 350.00
+      @worker4 = FactoryGirl.create :worker, min_wage: 250.00
+      @worker5 = FactoryGirl.create :worker, min_wage: 150.00
+    end
+
+    context "minimum wage" do
+      it "should return workers with exact minimum wage" do 
+        expect(Worker.minimum_wage(100.00).sort).to match_array([@worker1])
+      end
+    end
+
+    context "lower range of minimum wage" do
+      it "should return workers of min_wage equal to or below 300.00" do 
+        expect(Worker.lower_min_wage(300.00).sort).to match_array([@worker1, @worker5, @worker4, @worker2])
+      end
+    end
+
+    context "higher range of minimum wage" do 
+      it "should return workers of minimum wage equal to or above 300.00" do 
+        expect(Worker.higher_min_wage(300.00).sort).to match_array([@worker2, @worker3])
+      end
+    end
+  end
+
+
+
+  # search engine
+
+  describe ".search" do 
+    before do 
+      @worker1 = FactoryGirl.create :worker, first_name: "Dave", last_name: "Doson", age: 44, sex: "male", 
+      min_wage: 100.00, status: "UNASSIGNED"
+
+      @worker2 = FactoryGirl.create :worker, first_name: "Mary", last_name: "Anderson", age: 22, sex: "female", 
+      min_wage: 120.00, status: "UNASSIGNED" 
+
+      @worker3 = FactoryGirl.create :worker, first_name: "Clifford", last_name: "Johnson", age: 33, sex: "male",
+       min_wage: 200.00, status:  "ASSIGNED"
+    end
+
+    context "when no params supplied" do 
+      it "should return all workers" do 
+        expect(Worker.search({})).to match_array([@worker1, @worker2, @worker3])
+      end
+    end
+
+    context "when first name is Dave" do 
+      it "should return worker1" do 
+        params = { first_name: "Dave"}
+        expect(Worker.search(params)).to match_array([@worker1])
+      end
+    end
+
+    context "when last name is Ruth" do 
+      it "should return an empty array" do 
+        params = { last_name: "Ruth" }
+        expect(Worker.search(params)).to be_empty
+      end
+    end
+
+    context "when min age is 20 and max age is 35" do
+      it "should return worker 2 and 3" do 
+        params = { min_age: 20, max_age: 35 }
+        expect(Worker.search(params)).to match_array([@worker2, @worker3])
+      end
+    end
+
+    context "when sex is female" do 
+      it "should return worker 2" do 
+        params = { sex: "female" }
+        expect(Worker.search(params)).to match_array([@worker2])
+      end
+    end
+
+    context "when male and minimum wage is 100.00 and UNASSIGNED" do 
+      it "should return worker1" do 
+        params = { sex: "male", min_wage: 100.00, status: "UNASSIGNED" }
+        expect(Worker.search(params)).to match_array([@worker1])
+      end
+    end
+  end
 end

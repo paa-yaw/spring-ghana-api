@@ -3,7 +3,7 @@ class Api::V1::Admin::WorkersController < Api::V1::Admin::ApplicationController
   respond_to :json
 
   def index
-  	@workers = Worker.all
+  	@workers = Worker.search(params)
   	respond_with @workers
   end
 

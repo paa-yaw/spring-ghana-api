@@ -7,12 +7,12 @@ FactoryGirl.define do
     password "123456789"
     password_confirmation "123456789"
     age { rand(1..45) }
-    sex "female"
+    sex { ["male", "female"][rand(0..1)] }
     phone_number "0203034589"
     location { "Accra, East Legon" }
     experience { FFaker::Lorem.sentence }
-    min_wage 100.00
-    status "UNASSIGNED"
+    min_wage { rand(1..100).to_f }
+    status { ["UNASSIGNED", "ASSIGNED"][rand(0..1)] }
     request
   end
 
@@ -25,7 +25,7 @@ FactoryGirl.define do
     kitchens { rand(1..100) }
     time_of_arrival { Time.now }
     schedule { "3 times a week, mondays, wednesdays and fridays" }
-    status "UNRESOLVED"
+    status { ["UNRESOLVED", "RESOLVED"][rand(0..1)] }
     client   
 
   factory :request_with_workers do 

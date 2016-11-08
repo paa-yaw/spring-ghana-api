@@ -1,7 +1,12 @@
 class Request < ActiveRecord::Base
 
-  belongs_to :client
+  belongs_to :client, inverse_of: :requests
   has_many :workers
+
+   
+  validates :bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule, :client_id, :status, presence: true
+  validates :bedrooms, :bathrooms, :living_rooms, :kitchens, numericality: { greater_than_or_equal_to: 0 }
+  
 
 
   def resolve
@@ -11,9 +16,10 @@ class Request < ActiveRecord::Base
   def request_completed?
     self.update(status: "COMPLETED") if self.workers.empty?
   end
-   
-  validates :bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule, :client_id, :status, presence: true
-  validates :bedrooms, :bathrooms, :living_rooms, :kitchens, numericality: { greater_than_or_equal_to: 0 }
+
+
+
+
 
   scope :filter_by_bedroom_number, lambda { |number| 
     where("bedrooms == ?", number)

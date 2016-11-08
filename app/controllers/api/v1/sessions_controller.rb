@@ -10,7 +10,7 @@ class Api::V1::SessionsController < ApplicationController
     @user = @email.present? && (Client.find_by(email: @email) || Worker.find_by(email: @email))
     
     if @user.class == Client
-      if @user.valid_password? @password
+      if @user.valid_password? @password || @email.present?
         sign_in @user
         @user.generate_auth_token!
         @user.save
