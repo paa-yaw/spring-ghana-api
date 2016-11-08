@@ -9,10 +9,10 @@ describe Authentication do
 
   subject { authentication }
 
-  context "test current_client" do 
+  context "#current_client" do 
     before do
       @client = FactoryGirl.create :client
-      request.headers["Authorization"] = @client.auth_token
+      api_authorization_headers @client.auth_token
       allow(authentication).to receive(:request).and_return(request)
       allow(authentication).to receive(:current_client).and_return(@client) 
     end
@@ -39,11 +39,32 @@ describe Authentication do
     it { should respond_with 401 }
   end
 
+  describe "#client_signed_in?" do 
+
+    context "for client in session" do 
+      before do
+        @client = FactoryGirl.create :client
+        api_authorization_headers @client.auth_token
+        allow(authentication).to receive(:current_client).and_return(@client)
+      end
+
+      it { should be_client_signed_in }
+    end
+
+    context "for client not in session" do
+      before do 
+        allow(authentication).to receive(:current_client).and_return(nil)
+      end
+
+      it { should_not be_client_signed_in }
+    end
+  end
+
 
    describe "#current_worker" do 
     before do 
       @worker = FactoryGirl.create :worker 
-      request.headers["Authorization"] = @worker.auth_token
+      api_authorization_headers @worker.auth_token
       allow(authentication).to receive(:request).and_return(request)
       allow(authentication).to receive(:current_worker).and_return(@worker)
     end
@@ -68,5 +89,27 @@ describe Authentication do
     end
 
     it { should respond_with 401 }
+  end
+
+  describe "#worker_signed_in?" do 
+
+    context "when worker is in session" do 
+      before do
+        @worker = FactoryGirl.create :worker
+        api_authorization_headers @worker.auth_token
+        allow(authentication).to receive(:current_worker).and_return(@worker)
+      end
+
+    it { should be_worker_signed_in }
+    end
+
+    context "when worker is not in session" do
+      before do 
+        allow(authentication).to receive(:current_worker).and_return(nil)
+      end
+
+      it { should_not be_worker_signed_in }
+
+    end
   end
 end

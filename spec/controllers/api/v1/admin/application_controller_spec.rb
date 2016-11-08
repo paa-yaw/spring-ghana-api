@@ -14,13 +14,13 @@ RSpec.describe Api::V1::Admin::ApplicationController, type: :controller do
   describe "#current_admin!" do
     before do
       @admin = FactoryGirl.create :client, admin: true
+      api_authorization_headers @admin.auth_token
       allow(authorization).to receive(:current_admin).and_return(@admin)
       allow(authorization).to receive(:request).and_return(request) 
     end 
 
     it "returns admin from authorization header " do 
       expect(authorization.current_admin.auth_token).to eq @admin.auth_token
-      expect(authorization.current_admin).to eq @admin
     end
   end
 
@@ -37,5 +37,26 @@ RSpec.describe Api::V1::Admin::ApplicationController, type: :controller do
     end
 
     it { should respond_with 401 }
+  end
+
+  describe "#admin_signed_in?" do 
+
+    context "when admin is in session" do 
+      before do 
+        @admin = FactoryGirl.create :client, admin: true
+        api_authorization_headers @admin.auth_token
+        allow(authorization).to receive(:current_admin).and_return(@admin)
+      end
+
+      it { should be_admin_signed_in }
+    end
+
+    context "when admin is not in session" do 
+      before do 
+        allow(authorization).to receive(:current_admin).and_return(nil)
+      end
+
+      it { should_not be_admin_signed_in }
+    end
   end
 end
