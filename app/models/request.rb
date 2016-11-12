@@ -97,6 +97,11 @@ class Request < ActiveRecord::Base
    }
 
 
+   scope :filter_by_status, lambda { |status|
+    where("lower(status) LIKE ?", "#{status.downcase}")
+   }
+
+
 
 
 
@@ -122,6 +127,8 @@ class Request < ActiveRecord::Base
      requests = requests.max_living_rooms(params[:max_living_rooms].to_i) if params[:max_living_rooms]
 
      requests = requests.recent(params[:recent]) if params[:recent]
+
+     requests = requests.filter_by_status(params[:status]) if params[:status]
      
      requests	
    end  

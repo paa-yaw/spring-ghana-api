@@ -39,7 +39,7 @@ class Client < ActiveRecord::Base
 
   def self.search(params = {})
 
-    clients = Client.all
+    clients = Client.where(admin: false)
 
     clients = clients.filter_by_first_name(params[:first_name]) if params[:first_name]
     clients = clients.filter_by_last_name(params[:last_name]) if params[:last_name]

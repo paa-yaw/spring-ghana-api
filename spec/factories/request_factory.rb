@@ -12,7 +12,7 @@ FactoryGirl.define do
     location { "Accra, East Legon" }
     experience { FFaker::Lorem.sentence }
     min_wage { rand(1..100).to_f }
-    status { ["UNASSIGNED", "ASSIGNED"][rand(0..1)] }
+    status "UNASSIGNED"
     request
   end
 

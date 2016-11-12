@@ -24,7 +24,7 @@ class Worker < ActiveRecord::Base
   end
 
   def disengage
-    self.update(status: "UNASSIGNED")
+    self.update(status: "UNASSIGNED", request_id: nil)
   end
 
 

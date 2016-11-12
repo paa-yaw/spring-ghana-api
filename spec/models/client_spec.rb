@@ -114,11 +114,11 @@ RSpec.describe Client, type: :model do
 
   describe ".search" do 
     before do 
-      @client1 = FactoryGirl.create :client, first_name: "Uzumaki", last_name: "Naruto", location: "Konoha"
-      @client2 = FactoryGirl.create :client, first_name: "Uchiha", last_name: "Sasuke", location: "Konoha"
-      @client3 = FactoryGirl.create :client, first_name: "Gaara", last_name: "Gaara", location: "Hidden Sand Village"
-      @client4 = FactoryGirl.create :client, first_name: "Hatake", last_name: "Kakashi", location: "Konoha"
-      @client5 = FactoryGirl.create :client, first_name: "Jiraiya", last_name: "Sama", location: "Unknown"
+      @client1 = FactoryGirl.create :client, first_name: "Uzumaki", last_name: "Naruto", location: "Konoha", admin: false
+      @client2 = FactoryGirl.create :client, first_name: "Uchiha", last_name: "Sasuke", location: "Konoha", admin: false
+      @client3 = FactoryGirl.create :client, first_name: "Gaara", last_name: "Gaara", location: "Hidden Sand Village", admin: false
+      @client4 = FactoryGirl.create :client, first_name: "Hatake", last_name: "Kakashi", location: "Konoha", admin: false
+      @client5 = FactoryGirl.create :client, first_name: "Jiraiya", last_name: "Sama", location: "Unknown", admin: false
     end
 
     context "search first name Uzumaki, location Konaha" do 

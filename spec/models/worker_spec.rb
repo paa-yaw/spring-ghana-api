@@ -243,4 +243,17 @@ RSpec.describe Worker, type: :model do
       end
     end
   end
+
+  describe "condition for UNASSIGNED status of worker" do 
+    before do 
+      @worker1 = FactoryGirl.create :worker, status: "ASSIGNED"
+      @worker1.disengage
+    end
+
+    context "number of associated requests to worker 1 if status is UNASSIGNED" do 
+      it "should be nil" do
+        expect(@worker1.request).to eq nil
+      end
+    end
+  end
 end

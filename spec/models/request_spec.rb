@@ -174,6 +174,30 @@ RSpec.describe Request, type: :model do
     end
   end
 
+  describe ".filter_by_status" do 
+    before do 
+      @request1 = FactoryGirl.create :request, status: "UNRESOLVED"
+      @request2 = FactoryGirl.create :request, status: "RESOLVED"
+      @worker1  = FactoryGirl.create :worker, request: @request2
+    end
+
+    context "if params is UNRESOLVED" do
+      it "should return request 1" do 
+        expect(Request.filter_by_status("UNRESOLVED").sort).to match_array([@request1])
+      end
+    end
+
+    context "if params is RESOLVED" do
+      it "should have a worker assigned to it" do 
+        expect(@request2.workers).to include @worker1
+      end
+
+      it "should return request 2" do 
+        expect(Request.filter_by_status("RESOLVED").sort).to match_array([@request2])
+      end
+    end
+  end
+
 
 
 
@@ -184,15 +208,18 @@ RSpec.describe Request, type: :model do
       @request2 = FactoryGirl.create :request, bedrooms: 8, bathrooms: 2, kitchens: 6, living_rooms: 1, time_of_arrival: (DateTime.now) - rand(200).days
       @request3 = FactoryGirl.create :request, bedrooms: 4, bathrooms: 5, kitchens: 8, living_rooms: 2, time_of_arrival: (DateTime.now) - rand(100).days
       @request4 = FactoryGirl.create :request, bedrooms: 9, bathrooms: 3, kitchens: 5, living_rooms: 7, time_of_arrival: @now
+      @request5 = FactoryGirl.create :request, bedrooms: 44, bathrooms: 45, kitchens: 48, living_rooms: 42, time_of_arrival: (DateTime.now) - rand(10).days,
+       status: "RESOLVED"
+      @worker1 = FactoryGirl.create :worker, request: @request5 
     end
 
     context "when no params are sent" do
       it "returns 4 requests" do 
-        expect(Request.search({}).count).to eq 4 
+        expect(Request.search({}).count).to eq 5
       end
 
       it "returns all requests" do 
-        expect(Request.search({})).to match_array([@request1, @request2, @request3, @request4])
+        expect(Request.search({})).to match_array([@request1, @request2, @request3, @request4, @request5])
       end 
     end
     
@@ -238,6 +265,11 @@ RSpec.describe Request, type: :model do
       end 
     end
 
-
+    context "for UNRESOLVED requests" do 
+      it "should return all unresolved requests" do 
+        search_hash = { status: "RESOLVED" }
+        expect(Request.search(search_hash).sort).to match_array([@request5])
+      end
+    end
   end
 end

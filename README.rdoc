@@ -5,23 +5,25 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
 
-* System dependencies
+Ruby Version for this project is 2.2.1
+Rails Version is 4.2.5.1
 
-* Configuration
+clone this project using the following command
+git clone <url>
 
-* Database creation
+afterwards, run bundle install to install or gem dependencies by running this command in your terminal
 
-* Database initialization
+bundle install
 
-* How to run the test suite
+afterwards, you can run all the tests with this command
 
-* Services (job queues, cache servers, search engines, etc.)
+bundle exec bin/rake
 
-* Deployment instructions
+This project uses sqlite3, the default database system with rails 4, as well as the webrick, the default
+web server shipped with rails 4. Thus, no need for database or web server configuration in order to run this
+project
 
-* ...
 
 
 Please feel free to use a different markup language if you do not plan to run

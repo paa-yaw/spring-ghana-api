@@ -3,8 +3,7 @@ class Api::V1::Admin::ClientsController < Api::V1::Admin::ApplicationController
   respond_to :json
 
   def index
-    @clients = Client.where(admin: false)
-    respond_with @clients	
+    respond_with Client.search(params)
   end
 
   def show

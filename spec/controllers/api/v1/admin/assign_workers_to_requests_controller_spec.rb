@@ -120,6 +120,13 @@ RSpec.describe Api::V1::Admin::AssignWorkersToRequestsController, type: :control
   	  end
 
   	  it { should respond_with 200 }
+   
+
+
+      it "request_id of worker 1 should be nil" do
+        expect{@worker1.disengage}.to change{@worker1.request_id}.from(@request1.id).to(nil)
+      end
+    end
 
   	  context "unsuccessfully" do 
   	  	before do 
@@ -141,7 +148,6 @@ RSpec.describe Api::V1::Admin::AssignWorkersToRequestsController, type: :control
   	  	it { should respond_with 404 }
   	  end
   	end
-  end
 
 
 
