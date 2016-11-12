@@ -25,7 +25,7 @@ FactoryGirl.define do
     kitchens { rand(1..100) }
     time_of_arrival { Time.now }
     schedule { "3 times a week, mondays, wednesdays and fridays" }
-    status { ["UNRESOLVED", "RESOLVED"][rand(0..1)] }
+    status "UNRESOLVED"
     client   
 
   factory :request_with_workers do 

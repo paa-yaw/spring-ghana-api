@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Client, type: :model do
-  before { @client = FactoryGirl.create :client }
+  before { @client = FactoryGirl.build :client }
 
   subject { @client }
 
@@ -33,6 +33,7 @@ RSpec.describe Client, type: :model do
 
   describe "test association" do
   	before do 
+      @client.save
   	  requests = 5.times { FactoryGirl.create :request, client: @client }
   	end
 
@@ -50,6 +51,7 @@ RSpec.describe Client, type: :model do
   describe "generate_auth_token!" do 
 
     it "expect auth_token to be generated" do 
+      @client.save
       allow(Devise).to receive(:friendly_token).and_return("randomUNIQUEtoken123")
       @client.generate_auth_token!    	
       expect(@client.auth_token).to eq "randomUNIQUEtoken123"
@@ -69,5 +71,74 @@ RSpec.describe Client, type: :model do
        expect(@client).to receive(:generate_auth_token!)
        @client.save 
       end
+  end
+
+
+  describe ".filter_by_first_name" do 
+    before do 
+      @client1 = FactoryGirl.create :client, first_name: "Derek"
+      @client2 = FactoryGirl.create :client, first_name: "Anna"
+      @client3 = FactoryGirl.create :client, first_name: "Donald"
+    end
+
+    it "should return client 3" do 
+      expect(Client.filter_by_first_name("Donald").sort).to match_array([@client3])
+    end
+  end
+  
+
+  describe ".filter_by_last_name" do 
+    before do 
+      @client1 = FactoryGirl.create :client, last_name: "Trump"
+      @client2 = FactoryGirl.create :client, last_name: "Knowles"
+      @client3 = FactoryGirl.create :client, last_name: "Johnson"
+    end
+
+    it "should return client 1" do 
+      expect(Client.filter_by_last_name("Trump").sort).to  match_array([@client1])
+    end
+  end
+
+  describe ".filter_by_location" do 
+    before do 
+     @client1 = FactoryGirl.create :client, last_name: "Trump", location: "Accra"
+     @client2 = FactoryGirl.create :client, last_name: "Knowles", location: "Accra"
+     @client3 = FactoryGirl.create :client, last_name: "Johnson", location: "Kumasi"
+   end
+
+   it "should return client1 and client2" do 
+     expect(Client.filter_by_location("Accra").sort).to match_array([@client1, @client2])
+   end
+  end
+
+
+  describe ".search" do 
+    before do 
+      @client1 = FactoryGirl.create :client, first_name: "Uzumaki", last_name: "Naruto", location: "Konoha"
+      @client2 = FactoryGirl.create :client, first_name: "Uchiha", last_name: "Sasuke", location: "Konoha"
+      @client3 = FactoryGirl.create :client, first_name: "Gaara", last_name: "Gaara", location: "Hidden Sand Village"
+      @client4 = FactoryGirl.create :client, first_name: "Hatake", last_name: "Kakashi", location: "Konoha"
+      @client5 = FactoryGirl.create :client, first_name: "Jiraiya", last_name: "Sama", location: "Unknown"
+    end
+
+    context "search first name Uzumaki, location Konaha" do 
+      it "should return client 1" do
+        search_params = { first_name: "Uzumaki", location: "Konoha" } 
+        expect(Client.search(search_params).sort).to match_array([@client1]) 
+      end
+    end
+
+    context "search all members of Konaha" do 
+      it "should return client 1, 2, and 4" do 
+        search_params = { location: "Konoha" }
+        expect(Client.search(search_params).sort).to match_array([@client1, @client2, @client4])
+      end
+    end
+
+    context "when no params are supplied" do 
+      it "should return everything" do 
+        expect(Client.search({}).sort).to match_array([@client1, @client2, @client3, @client4, @client5])
+      end
+    end
   end
 end

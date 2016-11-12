@@ -55,7 +55,7 @@ RSpec.describe Api::V1::Admin::AssignWorkersToRequestsController, type: :control
 
   	context "successfully" do 
       before do 
-  	    @worker1 = FactoryGirl.create :worker
+  	    @worker1 = FactoryGirl.create :worker, status: "UNASSIGNED"
       	@request1 = FactoryGirl.create :request
 
   	    get :assign_worker, worker_id: @worker1.id, id: @request1.id

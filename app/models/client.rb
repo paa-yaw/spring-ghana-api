@@ -17,4 +17,36 @@ class Client < ActiveRecord::Base
       self.auth_token = Devise.friendly_token
   	end while self.class.exists?(auth_token: auth_token)
   end
+
+
+
+
+  scope :filter_by_first_name, lambda { |name|
+    where("lower(first_name) LIKE ?", "#{name.downcase}")
+  }
+
+
+  scope :filter_by_last_name, lambda { |name|
+    where("lower(last_name) LIKE ?", "#{name.downcase}")
+  }
+
+  scope :filter_by_location, lambda { |location|
+    where("lower(location) LIKE ?", "#{location.downcase}")
+  }
+
+
+
+
+  def self.search(params = {})
+
+    clients = Client.all
+
+    clients = clients.filter_by_first_name(params[:first_name]) if params[:first_name]
+    clients = clients.filter_by_last_name(params[:last_name]) if params[:last_name]
+    clients = clients.filter_by_location(params[:location]) if params[:location]
+
+
+    clients
+  end
+  
 end
