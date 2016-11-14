@@ -12,6 +12,8 @@ class Api::V1::ClientsController < ApplicationController
 
     if @client.save
       render json: @client, status:  201, location: [:api, @client]
+      ClientMailer.send_signup_alert(@client)
+      # send sms
     else
       render json: { errors: @client.errors }, status: 422
     end 
@@ -31,6 +33,8 @@ class Api::V1::ClientsController < ApplicationController
   	@client = current_client
   	@client.destroy
   	head 204
+    # send email
+    # send sms
   end
 
 

@@ -18,6 +18,8 @@ class Api::V1::Admin::AssignWorkersToRequestsController < Api::V1::Admin::Applic
   	  # change status of request from unresolved to resolved
   	  @request.resolve
       render json: @request, status: 200, location: [:api, :admin, @worker]
+      # send email
+      # send sms
     end
   end
 
@@ -28,6 +30,8 @@ class Api::V1::Admin::AssignWorkersToRequestsController < Api::V1::Admin::Applic
   	  # change status of worker from assigned to unassigned
   	  @worker.disengage
   	  render json: @request, status: 200, location: [:api, :admin, @worker] 
+      # send email
+      # send sms
   	end
   end
 
@@ -41,6 +45,8 @@ class Api::V1::Admin::AssignWorkersToRequestsController < Api::V1::Admin::Applic
       @request.workers.delete_all
       @request.request_completed?
       render json: @request, status: 200, location: [:api, :admin, @worker]
+      # send email
+      # send sms
     else
       # do nothing
     end

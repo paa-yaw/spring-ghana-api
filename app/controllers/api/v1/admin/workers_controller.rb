@@ -16,6 +16,8 @@ class Api::V1::Admin::WorkersController < Api::V1::Admin::ApplicationController
 
   	if @worker.save
   	  render json: @worker, status: 201, location: [:api, :admin, @worker]	
+      # send email
+      # send sms
   	else
   	  render json: { errors: @worker.errors }, status: 422
   	end

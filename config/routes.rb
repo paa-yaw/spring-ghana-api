@@ -1,7 +1,7 @@
 require "api_constraints"
 
 Rails.application.routes.draw do
-  devise_for :clients
+  devise_for :clients, :skip => [:sessions, :registrations]
 
   namespace :api, defaults: { format: :json },
                   constraints: { subdomain: "api" }, path: "/" do
