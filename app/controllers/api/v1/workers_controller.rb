@@ -12,6 +12,8 @@ class Api::V1::WorkersController < ApplicationController
 
   	if @worker.save
   	  render json: @worker, status: 201, location: [:api, @worker]	
+      # send email
+      # send sms
   	else
   	  render json: { errors: @worker.errors }, status: 422
   	end
@@ -30,6 +32,8 @@ class Api::V1::WorkersController < ApplicationController
   def destroy
   	@current_worker.destroy
   	head 204
+    # send email
+    # send sms
   end
 
   

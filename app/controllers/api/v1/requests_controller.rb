@@ -17,6 +17,8 @@ class Api::V1::RequestsController < ApplicationController
 
   	if @request.save
   	  render json: @request, status: 201, location: [:api, @request]
+      # send email
+      # send sms
   	else
   	  render json: { errors: @request.errors }, status: 422
   	end
