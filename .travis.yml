@@ -1,6 +1,5 @@
 language: ruby
-rvm:
-  - "2.2.1"
-install: bundle install
+
+# install: bundle install
 
 script: bundle exec rspec spec && bundle exec rake build 
