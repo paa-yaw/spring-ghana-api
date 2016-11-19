@@ -1,10 +1,12 @@
 class Request < ActiveRecord::Base
 
   belongs_to :client, inverse_of: :requests
+  # self.send(:belongs_to, :client, inverse_of: :requests)
   has_many :workers
+  # self.send(:has_many, :workers)
 
    
-  validates :bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule, :client_id, :status, presence: true
+  self.send(:validates, :bedrooms, :bathrooms, :living_rooms, :kitchens, :time_of_arrival, :schedule, :client_id, :status, presence: true)
   validates :bedrooms, :bathrooms, :living_rooms, :kitchens, numericality: { greater_than_or_equal_to: 0 }
   
 

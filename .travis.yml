@@ -1,0 +1,5 @@
+language: ruby
+ruby:
+  - 2.2.1
+install: bundle install
+script: bundle exec rake build && bundle exec rake builddoc
