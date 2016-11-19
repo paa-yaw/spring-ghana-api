@@ -1,6 +1,6 @@
 language: ruby
 rvm:
   - "2.2.1"
-install: bundle install
+# install: bundle install
 
-script: bundle exec rake build && bundle exec rake builddoc
+# script: bundle exec rake build && bundle exec rake builddoc
