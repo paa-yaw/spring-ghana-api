@@ -1,9 +1,6 @@
 
 == README
 
-
-[![Build Status](https://travis-ci.org/paa-yaw/spring-ghana-api.svg?branch=master)](https://travis-ci.org/paa-yaw/spring-ghana-api)
-
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
@@ -29,6 +26,8 @@ This project uses sqlite3, the default database system with rails 4, as well as 
 web server shipped with rails 4. Thus, no need for database or web server configuration in order to run this
 project
 
+
+![](https://travis-ci.org/paa-yaw/spring-ghana-api.svg?branch=master)(https://travis-ci.org/paa-yaw/spring-ghana-api)
 
 
 Please feel free to use a different markup language if you do not plan to run
