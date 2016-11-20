@@ -2,4 +2,4 @@ language: ruby
 
 # install: bundle install
 
-script: bundle exec rspec spec && bundle exec rake build 
+script: bundle exec rspec spec 
