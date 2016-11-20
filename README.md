@@ -2,7 +2,7 @@
 == README
 
 Build Status
-![Build Status](https://travis-ci.org/paa-yaw/spring-ghana-api.svg?branch=master)]
+![Build Status](https://travis-ci.org/paa-yaw/spring-ghana-api.svg?branch=master)
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
